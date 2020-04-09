@@ -7,16 +7,19 @@
       <nuxt />
     </div>
     <Tabbar />
+    <Loading/>
   </div>
 </template>
 
 <script>
+import Loading from '@/components/Loading.vue';
 import Header from '@/components/Header.vue';
 import Tabbar from '@/components/Tabbar.vue';
 export default {
   components:{
     Header,
-    Tabbar
+    Tabbar,
+    Loading
   }
 }
 </script>

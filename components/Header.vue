@@ -47,9 +47,7 @@ export default {
 
 <style lang="scss">
 .vue-nuxt-components-header{
-  // padding: 0 6px;
   height: 48px;
-  line-height: 48px;
   display: flex;
   font-size: 14px;
   position: relative;

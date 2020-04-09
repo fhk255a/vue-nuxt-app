@@ -38,6 +38,8 @@ export default {
   */
   plugins: [
     {src: '~plugins/vant', ssr: true},  // 引用vant ui 框架
+    '~/plugins/axios',
+    '~/plugins/http',
   ],
   /*
   ** Nuxt.js dev-modules
@@ -48,6 +50,7 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios',
   ],
   /*
   ** Build configuration

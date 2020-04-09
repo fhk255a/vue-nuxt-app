@@ -18,6 +18,11 @@
 
 <script>
 export default {
+  methods:{
+    clickBanner(){
+
+    }
+  },
   props:{
     time:{
       type:Number,

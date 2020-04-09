@@ -6,6 +6,7 @@
 
 <script>
 import Header from '@/components/Header.vue';
+import http from '@/common/http.js';
 import HomeContainer from '@/components/home/index.vue';
 export default {
   layout:'home',
@@ -212,6 +213,15 @@ export default {
   components:{
     Header,
     HomeContainer
+  },
+  async asyncData(context) {
+    console.log(http)
+    http.GET('/product/list').then(res=>{
+      console.log('res',res)
+    })
+  },
+  mounted(){
+    
   }
 }
 </script>
