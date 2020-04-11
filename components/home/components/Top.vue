@@ -1,15 +1,16 @@
 <template>
-  <div class="vue-nuxt-components-top-product">
+  <div class="vue-nuxt-components-top-product" :style="{height:((160+(title?20:0)+(price?20:0))/33+'rem')}">
     <slot></slot>
-    <ul class="product-list">
+    <ul class="product-list" >
       <li class="product-item" v-for="(item,index) in data" :key="item.id">
         <img class="share-icon" src="/image/home/top1.png" alt="" v-if="index==0">
         <img class="share-icon" src="/image/home/top2.png" alt="" v-if="index==1">
         <img class="share-icon" src="/image/home/top3.png" alt="" v-if="index==2">
         <div class="product-image">
-          <img :src="item.image" class="img" alt="">
+          <img class="img" v-load-img="item.mainImage" src="/image/image.png"/>
         </div>
-        <p class="product-price">￥{{item.price}}</p>
+        <p class="product-title van-ellipsis" v-if="title">{{item.title}}</p>
+        <p class="product-price" v-if="price">{{item.outPrice?'￥'+item.outPrice:''}}</p>
       </li>
     </ul>
   </div>
@@ -22,13 +23,20 @@ export default {
       type:Array,
       default:()=>{}
     },
-  }
+    title:{
+      type:Boolean,
+      default:()=>false
+    },
+    price:{
+      type:Boolean,
+      default:()=>false
+    }
+  },
 }
 </script>
 
 <style lang="scss">
 .vue-nuxt-components-top-product{
-  height: 210px;
   padding: 12px;
   background: #fff;
   overflow: hidden;
@@ -50,6 +58,10 @@ export default {
       }
       &:last-child{
         margin-right: 0;
+      }
+      .product-title{
+        font-size: 14px;
+        margin-top: 4px;
       }
       .product-image{
         width: 138px;

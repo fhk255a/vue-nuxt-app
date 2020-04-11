@@ -1,6 +1,6 @@
 <template>
   <div class="vue-nuxt-components-header">
-    <div class="left" v-if="left">
+    <div class="left" v-if="left" @click="$emit('left')">
       <slot name="left" />
     </div>
     <div class="content">
@@ -11,7 +11,7 @@
         <van-field v-model="searchText" placeholder="搜索." />
       </template>
     </div>
-    <div class="right" v-if="right">
+    <div class="right" v-if="right" @click="$emit('right')">
       <slot name="right"/>
     </div>
   </div>

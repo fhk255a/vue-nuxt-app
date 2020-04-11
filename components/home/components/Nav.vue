@@ -7,7 +7,7 @@
       :text="item.title"
     >
       <template v-if="!item.icon">
-        <img class="img" :src="item.image"/>
+        <img class="img" v-load-img="item.image" src="/image/image.png"/>
         <span >{{item.title}}</span>
       </template>
     </van-grid-item>

@@ -1,6 +1,6 @@
 <template>
   <div class="vue-nuxt-components-loading">
-    <van-loading class="loading"  color="#1989fa" >
+    <van-loading class="loading"  color="#fd6f04" >
       请稍等...
     </van-loading>
   </div>
@@ -16,7 +16,6 @@ export default {
 .vue-nuxt-components-loading{
   position: fixed;
   z-index: 9999;
-  background: rgba(7,17,27,0.25);
   left: 0;
   right: 0;
   top: 0;
@@ -33,7 +32,7 @@ export default {
     text-align: center;
     align-items: center;
     .van-loading__text{
-      color: #fff;
+      color: #fd6f04;
       margin-top: 14px;
     }
   }

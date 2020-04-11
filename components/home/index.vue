@@ -4,14 +4,14 @@
       <Banner v-if="item.type=='banner'" :key="item.id" :data="item.data"/>
       <Nav v-else-if="item.type=='nav'" :key="item.id" :data="item.data"/>
       <LittleBanner v-else-if="item.type=='littleBanner'" :key="item.id" :data="item.data" />
-      <Top v-else-if="item.type=='shareTop'" :key="item.id" :data="item.data.data">
-        <ItemHeader :title="item.data.title" className="share-top-header" :more="true"/>
+      <Top v-else-if="item.type=='shareTop'" :title="item.showTitle" :price="item.showPrice" :key="item.id" :data="item.data">
+        <ItemHeader :title="item.title" className="share-top-header" :more="true"/>
       </Top>
-      <Collection v-else-if="item.type=='collection'" :key="item.id" :data="item.data.data">
-        <ItemHeader :title="item.data.title" :more="true"/>
+      <Collection v-else-if="item.type=='collection'" :key="item.id" :data="item.data">
+        <ItemHeader :title="item.title" :more="true"/>
       </Collection>
-      <ProductList v-else-if="item.type=='list'" :key="item.id" :data="item.data.data">
-        <ItemHeader :title="item.data.title" />
+      <ProductList v-else-if="item.type=='product'" :title="item.showTitle" :remark="item.showRemark" :price="item.showPrice" :key="item.id" :data="item.data">
+        <ItemHeader :title="item.title" />
       </ProductList>
     </template>
   </div>
@@ -35,7 +35,10 @@ export default {
     Collection,
     ProductList
   },
-  props:['data']
+  props:['data'],
+  mounted(){
+    console.log('index',this.data)
+  }
 }
 </script>
 

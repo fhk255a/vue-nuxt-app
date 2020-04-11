@@ -4,12 +4,13 @@
     <ul class="product-list">
       <li class="product-item" v-for="(item) in data" :key="item.id">
         <div class="product-image">
-          <img class="img" :src="item.image" alt="">
+          <img class="img" :src="item.mainImage" alt="">
         </div>
         <div class="product-info">
-          <p class="product-title">{{item.title}}</p>
-          <p class="product-price">￥{{item.price}}</p>
-          <p class="product-old-price">￥{{item.oldPrice}}</p>
+          <p class="product-title van-multi-ellipsis--l2" v-if="title">{{item.title}}</p>
+          <p class="product-remark van-ellipsis" v-if="remark">{{item.remark}}</p>
+          <p class="product-price" v-if="price">￥{{item.outPrice}}</p>
+          <p class="product-old-price" v-if="price">{{item.outPrice?'￥'+item.outPrice:''}}</p>
         </div>
       </li>
     </ul>
@@ -22,6 +23,18 @@ export default {
     data:{
       type:Array,
       default:()=>[],
+    },
+    title:{
+      type:Boolean,
+      default:()=>false
+    },
+    price:{
+      type:Boolean,
+      default:()=>false
+    },
+    remark:{
+      type:Boolean,
+      default:()=>false
     }
   }
 }
@@ -64,6 +77,10 @@ export default {
           font-weight: 600;
           color: #FE5427;
           margin-top: 4px;
+        }
+        .product-remark{
+          color: #eee;
+          font-size: 12px;
         }
         .product-old-price{
           text-decoration: line-through;

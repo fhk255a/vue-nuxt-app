@@ -1,6 +1,6 @@
 <template>
   <div class="vue-nuxt-page-home">
-    <HomeContainer :data="componentData"/>
+    <HomeContainer :data="pageConfig.content"/>
   </div>
 </template>
 
@@ -10,219 +10,29 @@ import http from '@/common/http.js';
 import HomeContainer from '@/components/home/index.vue';
 export default {
   layout:'home',
-  data(){
-    return{
-      componentData:[
-        {
-          type:'banner',
-          id:'1',
-          data:[
-            {
-              image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-            },
-            {
-              image:'http://img.fhk255.cn/2020048/15863390352799532x240.jpg',
-            },
-          ]
-        },
-        {
-          type:'nav',
-          id:2,
-          data:[
-            {
-              image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-              title:'活动入口'
-            },
-            {
-              image:'http://img.fhk255.cn/2020048/15863390352799532x240.jpg',
-              title:'优惠券'
-            },
-          ]
-        },
-        {
-          type:'littleBanner',
-          id:3,
-          data:[
-            {
-              image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-              title:'活动入口'
-            },
-            {
-              image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-              title:'活动入口'
-            },
-          ]
-        },
-        {
-          type:'shareTop',
-          id:3,
-          data:{
-            title:'Best Sells',
-            data:[
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                price:'28.88'
-              },
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                price:'28.88'
-              },
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                price:'28.88'
-              },
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                price:'28.88'
-              },
-            ]
-          }
-        },
-        {
-          type:'littleBanner',
-          id:5,
-          data:[
-            {
-              image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-              title:'活动入口'
-            },
-          ]
-        },
-        {
-          type:'collection',
-          id:6,
-          data:{
-            title:'Featured Collections',
-            data:[
-              {
-                title:'Juicers For Healthier You',
-                count:158,
-                data:[
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                ]
-              },
-              {
-                title:'Juicers For Healthier You',
-                count:158,
-                data:[
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                ]
-              },
-              {
-                title:'Juicers For Healthier You',
-                count:158,
-                data:[
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                ]
-              },
-              {
-                title:'Juicers For Healthier You',
-                count:158,
-                data:[
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                ]
-              },
-              {
-                title:'Juicers For Healthier You',
-                count:158,
-                data:[
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                  {image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg'},
-                ]
-              },
-            ]
-          }
-        },
-        {
-          type:'list',
-          id:7,
-          data:{
-            title:'推荐商品',
-            data:[
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                title:'商品名称',
-                price:12,
-                oldPrice:23,
-                id:123,
-              },
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                title:'商品名称',
-                price:12,
-                oldPrice:23,
-                id:123,
-              },
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                title:'商品名称',
-                price:12,
-                oldPrice:23,
-                id:123,
-              },
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                title:'商品名称',
-                price:12,
-                oldPrice:23,
-                id:123,
-              },
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                title:'商品名称',
-                price:12,
-                oldPrice:23,
-                id:123,
-              },
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                title:'商品名称',
-                price:12,
-                oldPrice:23,
-                id:123,
-              },
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                title:'商品名称',
-                price:12,
-                oldPrice:23,
-                id:123,
-              },
-              {
-                image:'http://img.fhk255.cn/2020048/15863389833264548x240.jpg',
-                title:'商品名称',
-                price:12,
-                oldPrice:23,
-                id:123,
-              },
-            ]
-          }
-        },
-      ]
-    }
+  mounted(){
+    // let shareTopIds = (this.pageConfig.content[3].data.map(item=>item.id)).join(',');
+    console.log(this.pageConfig);
+    // this.$AJAX.get('')
   },
   components:{
     Header,
     HomeContainer
   },
   async asyncData(context) {
-    console.log(http)
-    http.GET('/product/list').then(res=>{
-      console.log('res',res)
-    })
+    let res = await http.get('/m/page/10');
+    if(res.code==200){
+      return {
+        pageConfig:{
+          ...res.data
+        }
+      }
+    }else{
+      return {
+        currentComponents:null
+      }
+    }
   },
-  mounted(){
-    
-  }
 }
 </script>
 

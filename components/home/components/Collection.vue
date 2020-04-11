@@ -8,17 +8,17 @@
             <span class="title">Juicers For Healthier You</span>
             <span class="count">3454 Products</span>
           </div>
-          <template v-for="(item,index) in item.data" >
+          <template v-for="(item,index) in item.productIds" >
             <div v-if="index<3" :key="index" class="flex-one-list">
-              <img :src="item.image" class="img" alt="">
+              <img class="img" v-load-img="item.mainImage" src="/image/image.png"/>
             </div>
           </template>
         </div>
-        <div v-else :key="index" :class="['flex-arr w50',(index != data.length-1 || index == data.length-2)?'bb':'']">
+        <div v-else :key="index" :class="['flex-arr w50',(index != data.length-1 && index != data.length-2)?'bb':'']">
           <span class="title">{{item.title}}</span>
           <div class="product-list">
-            <template v-for="(it,ind) in item.data" >
-              <img :src="it.image" v-if="ind<2" :key="ind" class="img" alt="">
+            <template v-for="(it,ind) in item.productIds" >
+              <img class="img" v-load-img="it.mainImage" v-if="ind<2" :key="ind" src="/image/image.png"/>
             </template>
           </div>
         </div>
@@ -34,6 +34,9 @@ export default {
       type:Array,
       default:()=>[]
     }
+  },
+  mounted(){
+    console.log(this.data);
   }
 }
 </script>

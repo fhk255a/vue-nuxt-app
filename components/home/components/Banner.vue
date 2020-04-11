@@ -1,7 +1,7 @@
 <template>
   <van-swipe :style="{height:height/37.5+'rem'}" @change="clickBanner" class="vue-nuxt-components-banner" :autoplay="time" indicator-color="white">
     <van-swipe-item v-for="(item,index) in data" :key="index" >
-      <img class="img" :lazy="item.image" :src="item.image"/>
+      <img class="img" v-load-img="item.image" src="/image/image.png"/>
     </van-swipe-item>
   </van-swipe>
 </template>

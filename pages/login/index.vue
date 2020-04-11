@@ -1,6 +1,6 @@
 <template>
   <div class="nuxt-page-login">
-    <Header :left="true">
+    <Header :left="true" @left="backIcon">
       <img style="margin-top:6px" slot="left" src="/image/icon/back.png" />
     </Header>
     <div class="page-container">
@@ -11,11 +11,11 @@
         <div class="container">
           <div class="input-item">
             <span class="label">手机</span>
-            <van-field class="input" v-model="login.username" placeholder="请输入手机号"></van-field>
+            <van-field class="input" clearable v-model="login.username" placeholder="请输入手机号"></van-field>
           </div>
           <div class="input-item">
             <span class="label">密码</span>
-            <van-field class="input" type="password" v-model="login.password" placeholder="请输入密码"></van-field>
+            <van-field class="input" clearable type="password" v-model="login.password" placeholder="请输入密码"></van-field>
           </div>
         </div>
         <div class="input-item btns">
@@ -30,15 +30,15 @@
           </div>
           <div class="input-item">
             <span class="label">手机</span>
-            <van-field class="input" v-model="register.username" placeholder="请输入手机号"></van-field>
+            <van-field class="input" clearable v-model="register.username" placeholder="请输入手机号"></van-field>
           </div>
           <div class="input-item">
             <span class="label">密码</span>
-            <van-field class="input" type="password" v-model="register.password" placeholder="请输入密码"></van-field>
+            <van-field class="input" clearable type="password" v-model="register.password" placeholder="请输入密码"></van-field>
           </div>
           <div class="input-item">
             <span class="label">昵称</span>
-            <van-field class="input" type="password" v-model="register.nickname" placeholder="请输入昵称"></van-field>
+            <van-field class="input" clearable type="password" v-model="register.nickname" placeholder="请输入昵称"></van-field>
           </div>
         </div>
         <div class="input-item btns">
@@ -57,27 +57,62 @@ export default {
     Header
   },
   methods:{
+    backIcon(){
+      this.$router.back();
+    },
+    registerBtn(){
+      if(this.register.username.trim() == ''){
+        this.$toast('请输入手机号');
+        return;
+      }
+      if(this.register.password.trim() == ''){
+        this.$toast('请输入密码');
+        return;
+      }
+      const params = {
+        username:this.register.username,
+        password:this.register.password,
+        nickname:this.register.nickname
+      }
+      this.$store.commit('function/loading',true);
+      this.$AJAX.post('/m/user/register',params).then(res=>{
+        if(res.code==200){
+          this.$toast('注册成功');
+          this.loginStatus = true;
+        }else{
+          this.$toast(res.msg);
+        }
+      }).catch(err=>{
+
+      }).finally(()=>{
+        this.$store.commit('function/loading',false);
+      })
+    },
     loginBtn(){
       if(this.login.username.trim() == ''){
-        Toast('请输入手机号');
+        this.$toast('请输入手机号');
         return;
       }
       if(this.login.password.trim() == ''){
-        Toast('请输入密码');
+        this.$toast('请输入密码');
         return;
       }
       const params = {
         username:this.login.username,
         password:this.login.password,
       }
-      this.$AJAX.POST('/m/user/login',params).then(res=>{
-        console.log(res);
+      this.$store.commit('function/loading',true);
+      this.$AJAX.post('/m/user/login',params).then(res=>{
+        if(res.code==200){
+          this.$toast('登陆成功');
+        }else{
+          this.$toast(res.msg);
+        }
       }).catch(err=>{
 
+      }).finally(()=>{
+        this.$store.commit('function/loading',false);
       })
-    },
-    registerBtn(){
-
     }
   },
   data(){

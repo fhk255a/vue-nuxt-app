@@ -7,7 +7,7 @@
       <nuxt />
     </div>
     <Tabbar />
-    <Loading/>
+    <Loading v-show="$store.state.function.loading"/>
   </div>
 </template>
 

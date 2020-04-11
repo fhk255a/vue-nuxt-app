@@ -48,19 +48,32 @@ request.interceptors.response.use(
     return error;
   }
 );
-const get = (url,params) => request.get(url, params,{
-  // showLoading: showLoading
-})
-const post = (url, data) => request.post(url, data, {
-  // showLoading: showLoading
-})
-
 export default {
-  POST (...arg) {
-    return get(...arg);
+  get (...arg) {
+    return new Promise((resolve, reject) => {
+      request.get(...arg).then(res => {
+        if (res.data.code == 200) { 
+          resolve(res.data);
+        } else {
+          resolve(res.data);
+        }
+      }).catch(err => {
+        reject(err);
+      })
+    });
   },
-  POST (...arg) {
-    return post(...arg)
+  post (...arg) {
+    return new Promise((resolve, reject) => {
+      request.post(...arg).then(res => {
+        if (res.data.code == 200) { 
+          resolve(res.data);
+        } else {
+          resolve(res.data);
+        }
+      }).catch(err => {
+        reject(err);
+      })
+    });
   }
 }
 // export default function(request){

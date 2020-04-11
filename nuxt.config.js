@@ -40,6 +40,7 @@ export default {
     {src: '~plugins/vant', ssr: true},  // 引用vant ui 框架
     '~/plugins/axios',
     '~/plugins/http',
+    '~/plugins/load-img',
   ],
   /*
   ** Nuxt.js dev-modules
