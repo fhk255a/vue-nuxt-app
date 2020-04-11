@@ -2,13 +2,15 @@
   <div class="vue-nuxt-components-product-list">
     <slot/>
     <ul class="product-list">
-      <li class="product-item" v-for="(item) in data" :key="item.id">
+      <li :class="['product-item','p-1',type]" v-for="(item) in data" :key="item.id" :type="type">
         <div class="product-image">
-          <img class="img" :src="item.mainImage" alt="">
+          <img class="img" src="/image/image.png" v-load-img="item.mainImage" alt="">
         </div>
         <div class="product-info">
-          <p class="product-title van-multi-ellipsis--l2" v-if="title">{{item.title}}</p>
-          <p class="product-remark van-ellipsis" v-if="remark">{{item.remark}}</p>
+          <div class="info">
+            <p class="product-title van-multi-ellipsis--l2" v-if="title">{{item.title}}</p>
+            <p class="product-remark van-ellipsis" v-if="remark">{{item.remark}}</p>
+          </div>
           <p class="product-price" v-if="price">￥{{item.outPrice}}</p>
           <p class="product-old-price" v-if="price">{{item.outPrice?'￥'+item.outPrice:''}}</p>
         </div>
@@ -35,6 +37,10 @@ export default {
     remark:{
       type:Boolean,
       default:()=>false
+    },
+    type:{
+      type:String,
+      default:()=>'2'
     }
   }
 }
@@ -49,11 +55,8 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
     >.product-item{
-      width: 172px;
       margin-bottom: 7px;
       .product-image{
-        width: 172px;
-        height: 172px;
         .img{
           width: 100%;
           height: 100%;
@@ -88,6 +91,46 @@ export default {
           color: #b2b2b2;
           margin-top: 2px;
         }
+      }
+    }
+    >.p-1{
+      width: 100%;
+      display: flex;
+      overflow: hidden;
+      margin-bottom: 0;
+      background: #fff;
+      border-bottom:1px solid #eee;
+      .product-image{
+        margin:12px;
+        min-width: 132px;
+        width: 132px;
+        height: 132px;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .product-info{
+        margin: 12px;
+        margin-left: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        .info{
+          flex:1;
+        }
+      }
+    }
+    .p-2{
+      width: 172px;
+      .product-image{
+        width: 172px;
+        height: 172px;
+      }
+    }
+    .p-3{
+      width: 112px;
+      .product-image{
+        width: 112px;
+        height: 112px;
       }
     }
   }

@@ -13,6 +13,7 @@
       <ProductList v-else-if="item.type=='product'" :title="item.showTitle" :remark="item.showRemark" :price="item.showPrice" :key="item.id" :data="item.data">
         <ItemHeader :title="item.title" />
       </ProductList>
+      <template v-else></template>
     </template>
   </div>
 </template>

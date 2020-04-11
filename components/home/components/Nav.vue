@@ -7,7 +7,24 @@
       :text="item.title"
     >
       <template v-if="!item.icon">
-        <img class="img" v-load-img="item.image" src="/image/image.png"/>
+        <template v-if="item.event=='url'">
+          <a :href="item.eventValue">
+            <img class="img" v-load-img="item.image" src="/image/image.png"/>
+          </a>
+        </template>
+        <template v-else-if="item.event=='product'">
+          <nuxt-link :to="`details/${item.eventValue}`">
+            <img class="img" v-load-img="item.image" src="/image/image.png"/>
+          </nuxt-link>
+        </template>
+        <template v-else-if="item.event=='collcetion'">
+          <nuxt-link :to="`collcetion/${item.eventValue}`">
+            <img class="img" v-load-img="item.image" src="/image/image.png"/>
+          </nuxt-link>
+        </template>
+        <template v-else>
+          <img class="img" v-load-img="item.image" src="/image/image.png"/>
+        </template>
         <span >{{item.title}}</span>
       </template>
     </van-grid-item>

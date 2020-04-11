@@ -4,13 +4,47 @@
       <van-swipe :style="{height:height/37.5+'rem'}" @change="clickBanner" 
         class="vue-nuxt-components-banner" :autoplay="time" indicator-color="white">
         <van-swipe-item v-for="(item,index) in data" :key="index" >
-          <img class="img" v-load-img="item.image" src="/image/image.png"/>
+          <template v-if="item.event=='url'">
+            <a :href="item.eventValue">
+              <img class="img" v-load-img="item.image" src="/image/image.png"/>
+            </a>
+          </template>
+          <template v-else-if="item.event=='product'">
+            <nuxt-link :to="`details/${item.eventValue}`">
+              <img class="img" v-load-img="item.image" src="/image/image.png"/>
+            </nuxt-link>
+          </template>
+          <template v-else-if="item.event=='collcetion'">
+            <nuxt-link :to="`collcetion/${item.eventValue}`">
+              <img class="img" v-load-img="item.image" src="/image/image.png"/>
+            </nuxt-link>
+          </template>
+          <template v-else>
+            <img class="img" v-load-img="item.image" src="/image/image.png"/>
+          </template>
         </van-swipe-item>
       </van-swipe>
     </template>
     <template v-else>
       <div class="little-banner" :style="{height:height/37.5+'rem'}"> 
-        <img class="img" v-load-img="data[0].image" src="/image/image.png"/>
+        <template v-if="data[0].event=='url'">
+          <a :href="data[0].eventValue">
+            <img class="img" v-load-img="data[0].image" src="/image/image.png"/>
+          </a>
+        </template>
+        <template v-else-if="data[0].event=='product'">
+          <nuxt-link :to="`details/${data[0].eventValue}`">
+            <img class="img" v-load-img="data[0].image" src="/image/image.png"/>
+          </nuxt-link>
+        </template>
+        <template v-else-if="data[0].event=='collcetion'">
+          <nuxt-link :to="`collcetion/${data[0].eventValue}`">
+            <img class="img" v-load-img="data[0].image" src="/image/image.png"/>
+          </nuxt-link>
+        </template>
+        <template v-else>
+          <img class="img" v-load-img="data[0].image" src="/image/image.png"/>
+        </template>
       </div>
     </template>
   </div>

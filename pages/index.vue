@@ -22,14 +22,15 @@ export default {
   async asyncData(context) {
     let res = await http.get('/m/page/10');
     if(res.code==200){
+      console.log(res);
       return {
-        pageConfig:{
-          ...res.data
-        }
+        pageConfig:res.data
       }
     }else{
       return {
-        currentComponents:null
+        pageConfig:{
+          content:[]
+        }
       }
     }
   },
