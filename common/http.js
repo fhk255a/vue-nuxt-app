@@ -52,24 +52,16 @@ export default {
   get (...arg) {
     return new Promise((resolve, reject) => {
       request.get(...arg).then(res => {
-        if (res.data.code == 200) { 
-          resolve(res.data);
-        } else {
-          resolve(res.data);
-        }
+        resolve(res.data);
       }).catch(err => {
         reject(err);
       })
-    });
+    });44
   },
   post (...arg) {
     return new Promise((resolve, reject) => {
       request.post(...arg).then(res => {
-        if (res.data.code == 200) { 
-          resolve(res.data);
-        } else {
-          resolve(res.data);
-        }
+        resolve(res.data);
       }).catch(err => {
         reject(err);
       })

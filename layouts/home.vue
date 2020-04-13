@@ -1,6 +1,6 @@
 <template>
   <div class="home-layout">
-    <Header type="search" :left="true">
+    <Header type="search" :right="false">
       <div slot="left">左边</div>
     </Header>
     <div class="container">

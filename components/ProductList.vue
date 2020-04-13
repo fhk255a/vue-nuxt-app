@@ -2,7 +2,7 @@
   <div class="vue-nuxt-components-product-list">
     <slot/>
     <ul class="product-list">
-      <li :class="['product-item','p-1',type]" v-for="(item) in data" :key="item.id" :type="type">
+      <li @click="openProductDetails(item.id)" :class="['product-item',type?'p-'+type:'p-2']" v-for="(item) in data" :key="item.id" :type="type">
         <div class="product-image">
           <img class="img" src="/image/image.png" v-load-img="item.mainImage" alt="">
         </div>
@@ -28,19 +28,24 @@ export default {
     },
     title:{
       type:Boolean,
-      default:()=>false
+      default:()=>true
     },
     price:{
       type:Boolean,
-      default:()=>false
+      default:()=>true
     },
     remark:{
       type:Boolean,
-      default:()=>false
+      default:()=>true
     },
     type:{
       type:String,
       default:()=>'2'
+    }
+  },
+  methods:{
+    openProductDetails(id){
+      this.$router.push(`/product/details/`+id);
     }
   }
 }

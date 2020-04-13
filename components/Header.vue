@@ -1,13 +1,16 @@
 <template>
-  <div class="vue-nuxt-components-header">
+  <div :class="['vue-nuxt-components-header',shadow?'header-shadow':'']">
     <div class="left" v-if="left" @click="$emit('left')">
-      <slot name="left" />
+      <div v-if="back" @click="backBefore">
+        <img src="/image/icon/back.png" alt="">
+      </div>
+      <slot v-else name="left" />
     </div>
     <div class="content">
       <template v-if="type=='title'">
         {{title}}
       </template>
-      <template v-if="type=='search'">
+      <template v-else>
         <van-field v-model="searchText" placeholder="搜索." />
       </template>
     </div>
@@ -24,6 +27,11 @@ export default {
       searchText:''
     }
   },
+  methods:{
+    backBefore(){
+      this.$router.back();
+    },
+  },
   props:{
     type:{
       type:String,
@@ -35,17 +43,25 @@ export default {
     },
     left:{
       type:Boolean,
-      default:()=>false
+      default:()=>true
     },
     right:{
       type:Boolean,
+      default:()=>true
+    },
+    shadow:{
+      type:Boolean,
       default:()=>false
     },
+    back:{
+      type:Boolean,
+      default:()=>true
+    }
   },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .vue-nuxt-components-header{
   height: 48px;
   display: flex;
@@ -61,12 +77,17 @@ export default {
   right: 0;
   .left{
     margin-left: 15px;
+    width: 32px;
   }
   .right{
+    width: 32px;
     margin-right: 15px;
   }
   .content{
     flex:1;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
     margin: 0 16px;
     .van-cell{
       padding: 4px 12px;
@@ -75,5 +96,8 @@ export default {
       background-color: #F2F2F2;
     }
   }
+}
+.header-shadow{
+  box-shadow:0px 1px 10px 0px rgba(0,0,0,0.08);
 }
 </style>

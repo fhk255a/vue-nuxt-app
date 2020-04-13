@@ -10,7 +10,7 @@
       <Collection v-else-if="item.type=='collection'" :key="item.id" :data="item.data">
         <ItemHeader :title="item.title" :more="true"/>
       </Collection>
-      <ProductList v-else-if="item.type=='product'" :title="item.showTitle" :remark="item.showRemark" :price="item.showPrice" :key="item.id" :data="item.data">
+      <ProductList v-else-if="item.type=='product'" :type="item.itemType" :title="item.showTitle" :remark="item.showRemark" :price="item.showPrice" :key="item.id" :data="item.data">
         <ItemHeader :title="item.title" />
       </ProductList>
       <template v-else></template>
@@ -37,9 +37,6 @@ export default {
     ProductList
   },
   props:['data'],
-  mounted(){
-    console.log('index',this.data)
-  }
 }
 </script>
 

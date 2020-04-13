@@ -10,11 +10,6 @@ import http from '@/common/http.js';
 import HomeContainer from '@/components/home/index.vue';
 export default {
   layout:'home',
-  mounted(){
-    // let shareTopIds = (this.pageConfig.content[3].data.map(item=>item.id)).join(',');
-    console.log(this.pageConfig);
-    // this.$AJAX.get('')
-  },
   components:{
     Header,
     HomeContainer
@@ -22,7 +17,6 @@ export default {
   async asyncData(context) {
     let res = await http.get('/m/page/10');
     if(res.code==200){
-      console.log(res);
       return {
         pageConfig:res.data
       }
