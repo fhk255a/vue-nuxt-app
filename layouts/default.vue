@@ -10,6 +10,9 @@ export default {
   components:{
     Loading
   },
+  mounted(){
+    console.log(window)
+  }
 }
 </script>
 

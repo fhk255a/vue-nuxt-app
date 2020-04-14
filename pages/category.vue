@@ -1,41 +1,25 @@
 <template>
   <div class="vue-nuxt-page-category">
-    <Header :left="true" title="店铺列表" :back="true" :right="true" :shadow="true"></Header>
+    <Header :left="true" title="分类" :back="true" :right="true" :shadow="true"></Header>
     <div class="page-body">
       <div class="vue-nuxt-categroy-left">
         <ul class="category-list">
-          <li class="category-list-item">
-            <span>测试分类</span>
-          </li>
-          <li class="category-list-item active">
-            <span>测试分类</span>
+          <li :class="['category-list-item',currentCategoryData.id == item.id?'active':'']" @click="openCategoryItem(item,index)" v-for="(item,index) in categoryList" :key="item.id">
+            <span>{{item.label}}</span>
           </li>
         </ul>
       </div>
       <div class="vue-nuxt-category-right">
-        <ul class="category-content-list">
-          <li class="category-content-item">
-            <div class="title">标题</div>
-            <ul class="category-content-item-list">
-              <li>
+        <ul class="category-content-list" v-if="currentCategoryData && currentCategoryData.children">
+          <li class="category-content-item" v-for="(item,index) in currentCategoryData.children" :key="item.id">
+            <div class="title">{{item.label}}</div>
+            <ul class="category-content-item-list" v-if="item.children">
+              <li v-for="(it,id) in item.children" :key="it.id">
                 <div class="image">
-                  <img src="/image/icon/shopLogo.png" class="img" alt="">
+                  <img src="/image/icon/shopLogo.png" v-load-img="it.imgUrl" class="img" alt="">
                 </div>
                 <p class="info">
-                  文本
-                </p>
-              </li>
-            </ul>
-          </li>
-          <li class="category-content-item">
-            <div class="title">标题</div>
-            <ul class="category-content-item-list">
-              <li>
-                <div class="image">
-                  <img src="/image/icon/shopLogo.png" class="img" alt="">
-                </div>
-                <p class="info">
-                  文本
+                  {{it.label}}
                 </p>
               </li>
             </ul>
@@ -49,11 +33,35 @@
 
 <script>
 import Header from '@/components/Header.vue';
+import http from '@/common/http.js';
 import Tabbar from '@/components/Tabbar.vue';
 export default {
   components:{
     Header,
     Tabbar
+  },
+  methods:{
+    openCategoryItem(item,index){
+      this.currentCategoryData = {...item};
+    }
+  },
+  mounted(){
+    this.openCategoryItem(this.categoryList[0],0);
+  },
+  async asyncData(context) {
+    let res = await http.get('/m/category/list');
+    if(res && res.code==200){
+      console.log(res);
+      return {
+        categoryList:res.data,
+        currentCategoryData:res.data[0],
+      }
+    }else{
+      return {
+        categoryList:[],
+        currentCategoryData:{}
+      }
+    }
   }
 }
 </script>
@@ -70,6 +78,7 @@ export default {
       position: absolute;
       left: 0;
       width: 100px;
+      padding-right: 10px;
       top: 50px;
       z-index: 99;
       background: #f8f8f8;
@@ -92,6 +101,9 @@ export default {
         .active{
           background: #fff;
           border-color:#FD6F04;
+          span{
+            color: #FD6F04;
+          }
         }
       }
     }
@@ -100,20 +112,22 @@ export default {
       left: 100px;
       right: 0;
       top: 50px;
+      z-index: 109;
+      background: #fff;
       bottom: 50px;
       .category-content-list{
         overflow-y: scroll;
         display: flex;
         flex-direction: column;
         .category-content-item{
-          margin-bottom: 8px;
+          border-bottom: 8px #f0f0f2 solid; 
           background: #fff;
           .title{
             padding: 8px 15px;
             border-bottom:rgba(227,227,230,1) 1px solid ;
             color: #232323;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 40 0;
           }
           .category-content-item-list{
             padding: 15px;
@@ -136,7 +150,7 @@ export default {
             }
           }
           &:last-child{
-            margin-bottom: 0;
+            border-bottom: 0; 
           }
         }
       }

@@ -98,8 +98,8 @@
         <van-icon name="star-o" size="28" color="#b2b2b2"/>
       </div>
       <div class="btns">
-        <van-button class="cart-btn" :disabled="!productInfo.status" type="default">加到购物车</van-button>
-        <van-button class="buy-btn" :disabled="!productInfo.status" type="default">立即购买</van-button>
+        <van-button class="cart-btn" :disabled="!productInfo.status" @click="addCart">加到购物车</van-button>
+        <van-button class="buy-btn" :disabled="!productInfo.status" @click="buy">立即购买</van-button>
       </div>
     </div>
     <van-number-keyboard
@@ -117,6 +117,14 @@
 import http from '@/common/http.js';
 import { ImagePreview } from 'vant';
 export default {
+  head(){
+    return {
+      title: this.productInfo.title,
+      meta: [
+        { hid: 'description', name: 'description', content: this.productInfo.title }
+      ]
+    }
+  },
   methods:{
     changeCurrentSku(item){
       if(item.status){
@@ -124,6 +132,51 @@ export default {
       }else{
         return;
       }
+    },
+    // 购买
+    buy(){
+      if(!this.currentSkuData.id && !this.currentSkuData.status){
+        this.$toast('请选择商品');
+        return;
+      }
+      if(this.currentSkuData.count<1){
+        this.$toast('该商品库存不足');
+        return;
+      }
+      let data = [
+        {
+          product: [
+            {
+              id:this.productInfo.id,
+              mainImage:this.productInfo.mainImage,
+              title:this.productInfo.title,
+              sku:[
+                {
+                  label:this.currentSkuData.label,
+                  count:this.productNum,
+                  outPrice:this.currentSkuData.outPrice,
+                  id:this.currentSkuData.id
+                }
+              ]
+            }
+          ],
+          shop : this.productInfo.shopInfo,
+        }
+      ]
+      window.localStorage.setItem('currentBuyList',JSON.stringify(data));
+      this.$store.commit('product/currentBuyList',data);
+      this.$router.push('/product/checkout');
+    },
+    addCart(){
+      if(!this.currentSkuData.id && !this.currentSkuData.status){
+        this.$toast('请选择商品');
+        return;
+      }
+      if(this.currentSkuData.count<1){
+        this.$toast('该商品库存不足');
+        return;
+      }
+      // 加入到购物车
     },
     onInput(d){
       this.productNum+=''+d;
@@ -161,20 +214,6 @@ export default {
       },
       showKeyBoard:false, // 数字键盘
       productNum:'',
-      info:{
-        image:[1,2,3,4,5],
-        skuList:[
-          {
-            image:null,
-          },
-          {
-            image:null,
-          },
-          {
-            image:null,
-          },
-        ]
-      }
     }
   },
   async asyncData(context) {
