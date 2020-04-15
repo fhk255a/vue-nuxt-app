@@ -1,12 +1,12 @@
 import axios from 'axios'
 import qs from "qs"
-let baseUrl = 'http://localhost:3000';
+let baseUrl = 'http://localhost:3000/m';
 if (!process.client) {
 	console.log("客户端");
-	baseUrl = 'http://localhost:3000';
+	baseUrl = 'http://localhost:3000/m';
 } else {
 	console.log("服务端");
-	baseUrl = 'http://localhost:3000';
+	baseUrl = 'http://localhost:3000/m';
 }
 const request = axios.create({
   baseURL: baseUrl,
@@ -49,18 +49,28 @@ request.interceptors.response.use(
   }
 );
 export default {
-  get (...arg) {
+  get (url,params) {
+    let data = {
+      url,
+      params,
+      method: 'get',
+    }
     return new Promise((resolve, reject) => {
-      request.get(...arg).then(res => {
+      request(data).then(res => {
         resolve(res.data);
       }).catch(err => {
         reject(err);
       })
-    });44
+    });
   },
-  post (...arg) {
+  post (url,data) {
+    let params = {
+      url,
+      data,
+      method: 'get',
+    }
     return new Promise((resolve, reject) => {
-      request.post(...arg).then(res => {
+      request(params).then(res => {
         resolve(res.data);
       }).catch(err => {
         reject(err);
@@ -68,16 +78,13 @@ export default {
     });
   }
 }
-// export default function(request){
-//   return new Promise((resolve, reject) => {
-//     request.then(res => {
-//       if (res.data.code == 200) {
-//         resolve(res.data);
-//       } else {
-//         resolve(res.data);
-//       }
-//     }).catch(err => {
-//       reject(err);
-//     })
-//   })
-// }
+export let ajax = request;
+export const http =(promise)=>{
+  return new Promise((resolve, reject) => {
+    promise.then(res => {
+      resolve(res.data);
+    }).catch(err => {
+      reject(err);
+    })
+  })
+}

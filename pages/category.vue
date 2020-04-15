@@ -49,7 +49,7 @@ export default {
     this.openCategoryItem(this.categoryList[0],0);
   },
   async asyncData(context) {
-    let res = await http.get('/m/category/list');
+    let res = await http.get('/category/list');
     if(res && res.code==200){
       console.log(res);
       return {

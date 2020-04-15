@@ -1,9 +1,9 @@
 <template>
   <div class="vue-nuxt-page-checkout">
     <Header :left="true" title="确认订单页" :back="true" :right="true" :shadow="true"></Header>
-    <template v-if="orderInfo.length>0">
+    <template v-if="orderInfo.result">
       <div class="page-body">
-        <div class="header">
+        <div class="header" @click="showAddressDialog = true">
           <div class="name">
             <div>Joker</div>
             <div class="default">
@@ -19,27 +19,25 @@
           </div>
         </div>  
         <div class="sku-body">
-          <div class="sku-item" v-for="(item) in orderInfo " :key="item.shop.id">
-            <div class="title" :style="{backgroundImage:`url(${item&&item.logo?item.logo:'/image/icon/shopIcon.png'})`}">{{item.shop.name}}</div>
+          <div class="sku-item" v-for="(item) in orderInfo.result" :key="item.id">
+            <div class="title" :style="{backgroundImage:`url(${item&&item.logo?item.logo:'/image/icon/shopIcon.png'})`}">{{item.name}}</div>
             <ul class="product-list">
-              <li class="product-item" v-for="(product) in item.product" :key="product.id">
-                <div class="product-item-sku" v-for="(sku) in product.sku" :key="sku.id">
-                  <div class="product-image">
-                    <img src="/image/image.png" v-load-img="product.mainImage" class="img" alt="">
+              <li class="product-item" v-for="(product) in item.products" :key="product.id">
+                <div class="product-image">
+                  <img src="/image/image.png" v-load-img="product.mainImage" class="img" alt="">
+                </div>
+                <div class="product-info">
+                  <div class="product-title van-ellipsis">{{product.title}}</div>
+                  <div class="product-sku">
+                    <span>{{product.label}}</span>
+                    <span>x {{product.num}}</span>
                   </div>
-                  <div class="product-info">
-                    <div class="product-title van-ellipsis">{{product.title}}</div>
-                    <div class="product-sku">
-                      <span>{{sku.label}}</span>
-                      <span>x {{sku.count}}</span>
-                    </div>
-                    <div class="product-price">￥ {{sku.outPrice * sku.count}}</div>
-                  </div>
+                  <div class="product-price p-icon">{{product.outPrice * product.num}}</div>
                 </div>
               </li>
             </ul>
             <div class="total-price">
-              <i class="color">￥ 291.88</i>
+              <i class="color p-icon">{{item.price}}</i>
             </div>
           </div>
         </div>
@@ -71,7 +69,7 @@
         <div class="result-box">
           <div class="price">
             <span>总价</span>
-            <span class="price p-icon">291.88</span>
+            <span class="price p-icon">{{orderInfo.totalPrice}}</span>
           </div>
           <div class="discount">
             <span>优惠</span>
@@ -85,35 +83,65 @@
       </div>
       <div class="footer">
         <div class="total">
-          合计: <i class="color p-icon">301.99</i>
+          合计: <i class="color p-icon">{{resultPrice}}</i>
         </div>
-        <van-button color="#FD6F04">确认订单</van-button>
+        <van-button color="#FD6F04" @click="createOrder">确认订单</van-button>
       </div>
     </template>
+    <van-popup
+      v-model="showAddressDialog"
+      position="bottom"
+      :style="{ height: '70vh' }"
+    >
+      <Address @close="closeAddress" :id="1"/>
+    </van-popup >
   </div>
 </template>
 
 <script>
+import Address from '@/components/Address';
+import SKU from '@/api/sku';
 import Header from '@/components/Header';
 export default {
   components:{
-    Header
+    Header,
+    Address
+  },
+  methods:{
+    // 关闭地址
+    closeAddress(){
+      this.showAddressDialog = false;
+    },
   },
   data(){
     return{
       orderInfo:[],
+      showAddressDialog:false,
       remarks:''
     }
   },
-  mounted(){
-    this.orderInfo = window.localStorage.getItem('currentBuyList')?JSON.parse(window.localStorage.getItem('currentBuyList')):[];
-    if(this.orderInfo.length<1){
-      this.$router.push('/404');
+  computed:{
+    resultPrice(){
+      return this.orderInfo.totalPrice;
     }
-    console.log(this.orderInfo);
   },
   beforeDestroy(){
-    window.localStorage.removeItem('currentBuyList')
+    // 清除本地sku数据
+    window.localStorage.removeItem('currentBuyList');
+  },
+  async beforeCreate(){
+    if(process.client){
+      const skuData = window.localStorage.getItem('currentBuyList');
+      if(skuData==null || skuData=='null'){
+        this.$router.push('/404');
+      }
+      let res = await SKU.querySkuProductInfo(skuData).then(res=>{
+        if(res.code==200){
+          this.orderInfo = res.data;
+          console.log(this.orderInfo)
+        }
+      })
+    }
   },
 }
 </script>
@@ -181,9 +209,13 @@ export default {
       padding-left: 20px;
       background-position: left center;
       background-repeat: no-repeat;
+      background-size: 20px 20px;
     }
     .product-item{
       width: 100%;
+      font-size: 14px;
+      display: flex;
+      padding-bottom: 11px;
       .product-image{
         width: 80px;
         height: 80px;
@@ -298,10 +330,4 @@ export default {
   }
 }
 
-  .product-item-sku{
-    width: 100%;
-    font-size: 14px;
-    display: flex;
-    padding-bottom: 11px;
-  }
 </style>

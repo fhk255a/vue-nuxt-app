@@ -55,7 +55,7 @@ export default {
   },
   async asyncData(context) {
     const pid = context.route.params.id;
-    let res = await http.get('/m/product/shop/'+pid,{current:1,size:20});
+    let res = await http.get('/product/shop/'+pid,{current:1,size:20});
     if(res.code==200){
       return {
         shopInfo:res.data.data,

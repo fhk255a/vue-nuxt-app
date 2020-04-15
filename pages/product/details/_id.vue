@@ -143,26 +143,7 @@ export default {
         this.$toast('该商品库存不足');
         return;
       }
-      let data = [
-        {
-          product: [
-            {
-              id:this.productInfo.id,
-              mainImage:this.productInfo.mainImage,
-              title:this.productInfo.title,
-              sku:[
-                {
-                  label:this.currentSkuData.label,
-                  count:this.productNum,
-                  outPrice:this.currentSkuData.outPrice,
-                  id:this.currentSkuData.id
-                }
-              ]
-            }
-          ],
-          shop : this.productInfo.shopInfo,
-        }
-      ]
+      let data = [{id:this.currentSkuData.id,num:this.productNum}];
       window.localStorage.setItem('currentBuyList',JSON.stringify(data));
       this.$store.commit('product/currentBuyList',data);
       this.$router.push('/product/checkout');
@@ -218,7 +199,7 @@ export default {
   },
   async asyncData(context) {
     const pid = context.route.params.id;
-    let res = await http.get('/m/product/queryProductIds/'+pid);
+    let res = await http.get('/product/queryProductIds/'+pid);
     if(res && res.code==200){
       return {
         productInfo:res.data

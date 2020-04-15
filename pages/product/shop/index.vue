@@ -33,7 +33,7 @@ export default {
     Shop
   },
   async asyncData(context) {
-    let res = await http.get('/m/product/shop/list',{current:1,size:20});
+    let res = await http.get('/product/shop/list',{current:1,size:20});
     if(res.code==200){
       return {
         tableList:res.data.data,

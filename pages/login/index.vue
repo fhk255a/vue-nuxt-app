@@ -75,7 +75,7 @@ export default {
         nickname:this.register.nickname
       }
       this.$store.commit('function/loading',true);
-      this.$AJAX.post('/m/user/register',params).then(res=>{
+      this.$AJAX.post('/user/register',params).then(res=>{
         if(res.code==200){
           this.$toast('注册成功');
           this.loginStatus = true;
@@ -102,7 +102,7 @@ export default {
         password:this.login.password,
       }
       this.$store.commit('function/loading',true);
-      this.$AJAX.post('/m/user/login',params).then(res=>{
+      this.$AJAX.post('/user/login',params).then(res=>{
         if(res.code==200){
           this.$toast('登陆成功');
         }else{
