@@ -88,6 +88,9 @@
         <van-button color="#FD6F04" @click="createOrder">确认订单</van-button>
       </div>
     </template>
+    <template v-else>
+      <Error/>
+    </template>
     <van-popup
       v-model="showAddressDialog"
       position="bottom"
@@ -102,16 +105,22 @@
 import Address from '@/components/Address';
 import SKU from '@/api/sku';
 import Header from '@/components/Header';
+import Error from '@/components/404.vue';
 export default {
   components:{
     Header,
-    Address
+    Address,
+    Error
   },
   methods:{
     // 关闭地址
     closeAddress(){
       this.showAddressDialog = false;
     },
+    // 下单
+    createOrder(){
+      this.$store.commit('function/loading',true);
+    }
   },
   data(){
     return{
@@ -132,15 +141,13 @@ export default {
   async beforeCreate(){
     if(process.client){
       const skuData = window.localStorage.getItem('currentBuyList');
-      if(skuData==null || skuData=='null'){
-        this.$router.push('/404');
+      if(skuData!=null && skuData!='null'){
+        let res = await SKU.querySkuProductInfo(skuData).then(res=>{
+          if(res.code==200){
+            this.orderInfo = res.data;
+          }
+        })
       }
-      let res = await SKU.querySkuProductInfo(skuData).then(res=>{
-        if(res.code==200){
-          this.orderInfo = res.data;
-          console.log(this.orderInfo)
-        }
-      })
     }
   },
 }
