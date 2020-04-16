@@ -96,6 +96,12 @@ export default {
       this.$store.commit('function/loading',true);
       USER.login(this.login.username,this.login.password).then(res=>{
         if(res.code==200){
+          window.localStorage.setItem('nuxt-userInfo',JSON.stringify(res.data.userInfo));
+          window.localStorage.setItem('nuxt-address',JSON.stringify(res.data.address));
+          window.localStorage.setItem('nuxt-token',JSON.stringify(res.data.token));
+          this.$store.commit('user/userInfo',res.data.userInfo);
+          this.$store.commit('user/address',res.data.address);
+          this.$store.commit('user/token',res.data.token);
           this.$toast('登陆成功');
         }else{
           this.$toast(res.msg);

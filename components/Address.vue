@@ -9,9 +9,9 @@
       </template>
     </van-nav-bar>
     <div class="address-list">
-      <li :class="['address-item',id==item.id?'active':'']" v-for="(item) in data" :key="item.id" @click="close(item)">
+      <li :class="['address-item',id==item.id?'active':'']" v-for="(item) in getAddress" :key="item.id" @click="close(item)">
         <p class='name'>{{item.name}}</p>
-        <p class="content">{{item.address}}</p>
+        <p class="content">{{item.content}}</p>
         <p class="phone">{{item.phone}}</p>
       </li>
     </div>
@@ -22,7 +22,7 @@
 export default {
   methods:{
     close(item){
-      this.$emit('close',item)
+      this.$emit('close',item);
     }
   },
   props:{
@@ -39,7 +39,13 @@ export default {
       type:Number,
       default:()=>0
     },
-  }
+  },
+  computed: {
+    getAddress(){
+      // return window.localStorage.getItem('nuxt-address')?JSON.parse(window.localStorage.getItem('nuxt-address')):[];
+      return this.$store.state.user.address;
+    }
+  },
 } 
 </script>
 

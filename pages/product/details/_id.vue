@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="vue-nuxt-components-body">
-      <div class="product-details-banner">
+      <div class="product-details-banner" v-if="productInfo.images.length>0">
         <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
           <van-swipe-item v-for="(item,index) in productInfo.images" class="product-banner-image" :key="'banner-'+index">
             <img @click="openImage(index)" class="img" v-load-img="item" src="/image/image.png"/>
@@ -178,6 +178,7 @@ export default {
     }
   },
   mounted(){
+    console.log(this.productInfo.images);
     if(!this.productInfo.id){
       this.$toast({message:'商品不存在',icon:'clear'});
       return;

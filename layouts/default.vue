@@ -11,7 +11,16 @@ export default {
     Loading
   },
   mounted(){
-    console.log(window)
+    const local=(key)=>{ return window.localStorage.getItem(key) };
+    if(!this.$store.state.user.userInfo.id){
+      this.$store.commit('user/userInfo',JSON.parse(local('nuxt-userInfo')));
+    }
+    if(this.$store.state.user.address.length<1){
+      this.$store.commit('user/address',JSON.parse(local('nuxt-address')));
+    }
+    if(this.$store.state.user.token==''){
+      this.$store.commit('user/token',JSON.parse(local('nuxt-token')));
+    }
   }
 }
 </script>

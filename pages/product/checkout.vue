@@ -1,22 +1,27 @@
 <template>
   <div class="vue-nuxt-page-checkout">
     <Header :left="true" title="确认订单页" :back="true" :right="true" :shadow="true"></Header>
-    <template v-if="orderInfo.result">
+    <template v-if="orderInfo.result.length>0">
       <div class="page-body">
         <div class="header" @click="showAddressDialog = true">
-          <div class="name">
-            <div>Joker</div>
-            <div class="default">
-              默认地址
+          <template v-if="currentAddress.id">
+            <div class="name">
+              <div>{{currentAddress.name}}</div>
+              <div class="default" v-if="currentAddress.id==$store.state.user.userInfo.addressId">
+                默认地址
+              </div>
             </div>
-          </div>
-          <div class="address">
-            广州市joker
-          </div>
-          <div class="phone">
-            <div>1455-564554</div>
-            <img style="width:16px;height:16px" src="/image/icon/edit.png" class="img" alt="">
-          </div>
+            <div class="address">
+              {{currentAddress.content}}
+            </div>
+            <div class="phone">
+              <div>{{currentAddress.phone}}</div>
+              <img style="width:16px;height:16px" src="/image/icon/edit.png" class="img" alt="">
+            </div>
+          </template>
+          <template v-else>
+            <div>还没有添加地址哦</div>
+          </template>
         </div>  
         <div class="sku-body">
           <div class="sku-item" v-for="(item) in orderInfo.result" :key="item.id">
@@ -146,7 +151,9 @@ export default {
   },
   data(){
     return{
-      orderInfo:[],
+      orderInfo:{
+        result:[]
+      },
       showAddressDialog:false,
       remarks:''
     }
@@ -154,6 +161,16 @@ export default {
   computed:{
     resultPrice(){
       return this.orderInfo.totalPrice;
+    },
+    // 当前的地址
+    currentAddress(){
+      let address = this.$store.state.user.address;
+      if(address.length>0){
+        const item = address.find(item=>item.id == this.$store.state.user.userInfo.addressId);
+        return item?item:address[0];
+      }else{
+        return {}
+      }
     }
   },
   beforeDestroy(){
@@ -167,6 +184,8 @@ export default {
         let res = await SKU.querySkuProductInfo(skuData).then(res=>{
           if(res.code==200){
             this.orderInfo = res.data;
+          }else{
+            this.$toast(res.msg);
           }
         })
       }
