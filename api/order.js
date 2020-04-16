@@ -1,15 +1,15 @@
 import {ajax,http} from '@/common/http.js';
-const URL = '/sku';
+const URL = '/order';
 export default {
-  // 根据skuid 查询商品信息
-  querySkuProductInfo(skuData){
+  // 创建订单
+  createOrder(skuData){
     let promise = ajax({
-      url: URL+'/querySkuProductInfo',
+      url: URL+'/create',
       method: 'post',
       data:{
         skuData
       }
     });
     return http(promise);
-  },
+  }
 }

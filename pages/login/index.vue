@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import USER from '@/api/user';
 import Header from '@/components/Header';
 export default {
   components:{
@@ -69,13 +70,8 @@ export default {
         this.$toast('请输入密码');
         return;
       }
-      const params = {
-        username:this.register.username,
-        password:this.register.password,
-        nickname:this.register.nickname
-      }
       this.$store.commit('function/loading',true);
-      this.$AJAX.post('/user/register',params).then(res=>{
+      USER.register(this.register.username,this.register.password,this.register.nickname).then(res=>{
         if(res.code==200){
           this.$toast('注册成功');
           this.loginStatus = true;
@@ -97,12 +93,8 @@ export default {
         this.$toast('请输入密码');
         return;
       }
-      const params = {
-        username:this.login.username,
-        password:this.login.password,
-      }
       this.$store.commit('function/loading',true);
-      this.$AJAX.post('/user/login',params).then(res=>{
+      USER.login(this.login.username,this.login.password).then(res=>{
         if(res.code==200){
           this.$toast('登陆成功');
         }else{

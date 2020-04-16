@@ -104,6 +104,7 @@
 <script>
 import Address from '@/components/Address';
 import SKU from '@/api/sku';
+import ORDER from '@/api/order';
 import Header from '@/components/Header';
 import Error from '@/components/404.vue';
 export default {
@@ -119,8 +120,29 @@ export default {
     },
     // 下单
     createOrder(){
+      let skuIds = [];
+      for(let i in this.orderInfo.result){
+        const items = this.orderInfo.result[i];
+        items.products.forEach(item=>{
+          skuIds.push({
+            id:item.skuId,
+            num:item.num
+          })
+        })
+      }
       this.$store.commit('function/loading',true);
-    }
+      ORDER.createOrder(JSON.stringify(skuIds)).then(res=>{
+        if(res.code==200){
+          this.$router.push('/order/'+res.data.id);
+        }else{
+          this.$toast(res.msg);
+        }
+      }).catch(err=>{
+
+      }).finally(()=>{
+        this.$store.commit('function/loading',false);
+      })
+    } 
   },
   data(){
     return{

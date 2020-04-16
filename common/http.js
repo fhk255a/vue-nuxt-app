@@ -10,7 +10,8 @@ if (!process.client) {
 }
 const request = axios.create({
   baseURL: baseUrl,
-  timeout:5000
+  timeout:5000,
+  withCredentials:true,
 });
 request.interceptors.request.use(
   config => {
@@ -51,6 +52,7 @@ request.interceptors.response.use(
 export default {
   get (url,params) {
     let data = {
+      withCredentials:true,
       url,
       params,
       method: 'get',
@@ -65,6 +67,7 @@ export default {
   },
   post (url,data) {
     let params = {
+      withCredentials:true,
       url,
       data,
       method: 'get',
