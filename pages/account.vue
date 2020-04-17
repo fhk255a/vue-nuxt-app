@@ -2,16 +2,20 @@
   <div class="vue-nuxt-page-account">
     <div class="page-header">
       <div class="user-img">
-        <img class="img" src="" alt="">
+        <img class="img" src="/image/image.png" v-load-img="userinfo.head" alt="">
       </div >
       <div class="info">
-        <p>Joker</p>
-        <p class="id">ID:249249</p>
+        <p>
+          <span v-if="userinfo.id">{{userinfo.nickname}}</span>
+          <span v-else>去登录</span>
+        </p>
+        <p class="id">ID:{{userinfo.id}}</p>
       </div>
     </div>
     <div class="page-body">
       <div class="box">
-        <div class="list-item" style="border-bottom: 0.5px solid #d9d9d9bf;backgroundImage:url('/image/user/user_1.png')">
+        <div class="list-item" @click="$router.push('/user/order')"
+            style="border-bottom: 0.5px solid #d9d9d9bf;backgroundImage:url('/image/user/user_1.png')">
           <div class="left" >我的订单</div>
           <div class="right"></div>
         </div>
@@ -35,7 +39,7 @@
         </div>
       </div>
       <div class="box">
-        <div class="list-item" :style="{backgroundImage:`url(${item.icon})`}" v-for="(item,index) in userList" :key="item.path">
+        <div class="list-item" @click="openItem(item)" :style="{backgroundImage:`url(${item.icon})`}" v-for="(item,index) in userList" :key="item.path">
           <div :class="['left']" >
             {{item.left}}
           </div>
@@ -45,7 +49,7 @@
         </div>
       </div>
       <div class="box">
-        <div class="list-item" :style="{backgroundImage:`url(${item.icon})`}" v-for="(item,index) in setList" :key="item.path">
+        <div class="list-item" @click="openItem(item)" :style="{backgroundImage:`url(${item.icon})`}" v-for="(item,index) in setList" :key="item.path">
           <div :class="['left']" >
             {{item.left}}
           </div>
@@ -55,7 +59,7 @@
         </div>
       </div>
       <div class="box">
-        <div class="list-item" :style="{backgroundImage:`url(${item.icon})`}" v-for="(item,index) in system" :key="item.path">
+        <div class="list-item" @click="openItem(item)" :style="{backgroundImage:`url(${item.icon})`}" v-for="(item,index) in system" :key="item.path">
           <div :class="['left']" >
             {{item.left}}
           </div>
@@ -78,20 +82,32 @@ export default {
   data(){
     return{
       userList:[
-        {icon:'/image/user/user_2.png',left:'我的信息'},
-        {icon:'/image/user/user_3.png',left:'我的金币',right:0},
-        {icon:'/image/user/user_5.png',left:'我的收藏',right:0},
-        {icon:'/image/user/user_6.png',left:'优惠券',right:0},
+        {icon:'/image/user/user_2.png',left:'我的信息',id:'userinfo'},
+        {icon:'/image/user/user_3.png',left:'我的金币',id:'cion',right:0},
+        {icon:'/image/user/user_5.png',left:'我的收藏',id:'collection',right:0},
+        {icon:'/image/user/user_6.png',left:'优惠券',id:'coupon',right:0},
       ],
       setList:[
-        {icon:'/image/user/user_7.png',left:'我的地址'},
-        {icon:'/image/user/user_8.png',left:'客服'},
-        {icon:'/image/user/user_9.png',left:'我的二维码',right:'UD12345'},
+        {icon:'/image/user/user_7.png',left:'我的地址',id:'address'},
+        {icon:'/image/user/user_8.png',left:'客服',id:'kefu'},
+        {icon:'/image/user/user_9.png',left:'我的二维码',id:'qr',right:'UD12345'},
       ],
       system:[
-        {icon:'/image/user/user_10.png',left:'提问跟解答'},
-        {icon:'/image/user/user_11.png',left:'设置'},
+        {icon:'/image/user/user_10.png',left:'提问跟解答',id:'faq'},
+        {icon:'/image/user/user_11.png',left:'设置',id:'set'},
       ]
+    }
+  },
+  methods:{
+    openItem(item){
+      if(item.id == 'address'){
+        this.$router.push('/user/address');
+      }
+    }
+  },
+  computed:{
+    userinfo(){
+      return this.$store.state.user.userInfo;
     }
   }
 }
@@ -163,6 +179,7 @@ export default {
     padding-top: 50px;
     .user-img{
       width: 78px;
+      overflow: hidden;
       border-radius: 39px;
       margin-right: 15px;
       height: 78px;

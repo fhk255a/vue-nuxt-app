@@ -21,9 +21,6 @@
       <template v-if="shopInfo.data && shopInfo.data.length>0">
         <Product :data="shopInfo.data"/>
       </template>
-      <template v-else>
-        <Error/>
-      </template>
     </div>
   </div>
 </template>
@@ -66,6 +63,8 @@ export default {
         }
       }
     }else{
+      this.$router.go(-1);
+      this.$toast(res.msg);
       return {
         shopInfo:[],
         page:{

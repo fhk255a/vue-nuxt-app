@@ -178,7 +178,6 @@ export default {
     }
   },
   mounted(){
-    console.log(this.productInfo.images);
     if(!this.productInfo.id){
       this.$toast({message:'商品不存在',icon:'clear'});
       return;

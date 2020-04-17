@@ -1,21 +1,21 @@
 <template>
   <div class="vue-nuxt-page-checkout">
     <Header :left="true" title="确认订单页" :back="true" :right="true" :shadow="true"></Header>
-    <template v-if="orderInfo.result.length>0">
+    <template v-if="orderInfo.result.length && orderInfo.result.length>0">
       <div class="page-body">
         <div class="header" @click="showAddressDialog = true">
           <template v-if="currentAddress.id">
             <div class="name">
               <div>{{currentAddress.name}}</div>
-              <div class="default" v-if="currentAddress.id==$store.state.user.userInfo.addressId">
+              <div class="default" v-if="currentAddress.isDefault">
                 默认地址
               </div>
             </div>
             <div class="address">
-              {{currentAddress.content}}
+              {{currentAddress.province}}{{currentAddress.city}}{{currentAddress.county}}{{currentAddress.country}}{{currentAddress.addressDetail}}
             </div>
             <div class="phone">
-              <div>{{currentAddress.phone}}</div>
+              <div>{{currentAddress.tel}}</div>
               <img style="width:16px;height:16px" src="/image/icon/edit.png" class="img" alt="">
             </div>
           </template>
@@ -93,34 +93,63 @@
         <van-button color="#FD6F04" @click="createOrder">确认订单</van-button>
       </div>
     </template>
-    <template v-else>
-      <Error/>
-    </template>
     <van-popup
       v-model="showAddressDialog"
       position="bottom"
       :style="{ height: '70vh' }"
     >
-      <Address @close="closeAddress" :id="1"/>
+      <Address @close="closeAddress" :id="currentAddress.id" @add="addAddress"/>
     </van-popup >
+    <van-popup
+      v-model="addAddressDialog"
+      position="left"
+      @close="close"
+      :close-on-click-overlay="false"
+      :style="{ height: '100vh' }"
+    >
+      <AddressPage @save="saveAddress"/>
+    </van-popup>
   </div>
 </template>
 
 <script>
+import AddressPage from '@/components/address/index.vue'
 import Address from '@/components/Address';
 import SKU from '@/api/sku';
 import ORDER from '@/api/order';
 import Header from '@/components/Header';
 import Error from '@/components/404.vue';
+import FUNC from '@/api/function';
 export default {
   components:{
     Header,
     Address,
-    Error
+    Error,
+    AddressPage
   },
   methods:{
+    addAddress(){
+      this.addAddressDialog = true;
+    },
+    saveAddress(v){
+      FUNC.addAddress(v).then(res=>{
+        if(res.code==200){
+          window.localStorage.setItem('nuxt-address',JSON.stringify(res.data));
+          this.$store.commit('user/address',res.data);
+          this.addAddressDialog = false;
+        }else{
+          this.$toast(res.msg);
+        }
+      }).catch(err=>{
+        this.$toast(err);
+      })
+    },
+    close(){
+
+    },
     // 关闭地址
-    closeAddress(){
+    closeAddress(item){
+      this.currentAddress = {...item};
       this.showAddressDialog = false;
     },
     // 下单
@@ -135,10 +164,23 @@ export default {
           })
         })
       }
+      if(!this.currentAddress.id){
+        this.$toast.error('地址不能为空');
+        return;
+      }
+      if(this.skuIds && this.skuIds.length<1){
+        this.$toast.error('商品不能为空');
+        return;
+      }
       this.$store.commit('function/loading',true);
-      ORDER.createOrder(JSON.stringify(skuIds)).then(res=>{
+      let data = {
+        remark:this.remarks,  
+        addressId:this.currentAddress.id,
+        skuData:JSON.stringify(skuIds),
+      }
+      ORDER.createOrder(data).then(res=>{
         if(res.code==200){
-          this.$router.push('/order/'+res.data.id);
+          this.$router.push('/order/'+res.data.orderId);
         }else{
           this.$toast(res.msg);
         }
@@ -154,24 +196,17 @@ export default {
       orderInfo:{
         result:[]
       },
+      addAddressDialog:false,
       showAddressDialog:false,
-      remarks:''
+      remarks:'',
+      currentAddress:this.$store.state.user.address.length>0?(this.$store.state.user.address.find(item=>item.isDefault)?
+      this.$store.state.user.address.find(item=>item.isDefault):this.$store.state.user.address[0]):{},
     }
   },
   computed:{
     resultPrice(){
       return this.orderInfo.totalPrice;
     },
-    // 当前的地址
-    currentAddress(){
-      let address = this.$store.state.user.address;
-      if(address.length>0){
-        const item = address.find(item=>item.id == this.$store.state.user.userInfo.addressId);
-        return item?item:address[0];
-      }else{
-        return {}
-      }
-    }
   },
   beforeDestroy(){
     // 清除本地sku数据
@@ -179,12 +214,15 @@ export default {
   },
   async beforeCreate(){
     if(process.client){
+      this.$store.commit('function/loading',true);
       const skuData = window.localStorage.getItem('currentBuyList');
+      this.$store.commit('function/loading',false);
       if(skuData!=null && skuData!='null'){
         let res = await SKU.querySkuProductInfo(skuData).then(res=>{
           if(res.code==200){
             this.orderInfo = res.data;
           }else{
+            this.$router.go(-1);
             this.$toast(res.msg);
           }
         })

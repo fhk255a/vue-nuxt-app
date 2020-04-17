@@ -60,3 +60,10 @@ table {
 .p-icon::before{
 	content: '￥';
 }
+.nuxt-form{
+	display: flex;
+	flex-wrap: wrap;
+}
+.w100{
+	width: 100%;
+}

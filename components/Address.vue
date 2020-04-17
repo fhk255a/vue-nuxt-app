@@ -5,14 +5,14 @@
         <img src="/image/icon/left.png" alt=""> 
       </template>
       <template #right>
-        <img src="/image/icon/add.png" alt=""> 
+        <img @click="$emit('add')" src="/image/icon/add.png" alt=""> 
       </template>
     </van-nav-bar>
     <div class="address-list">
       <li :class="['address-item',id==item.id?'active':'']" v-for="(item) in getAddress" :key="item.id" @click="close(item)">
         <p class='name'>{{item.name}}</p>
-        <p class="content">{{item.content}}</p>
-        <p class="phone">{{item.phone}}</p>
+        <p class="content">{{item.province}}{{item.city}}{{item.county}}{{item.country}}{{item.addressDetail}}</p>
+        <p class="phone">{{item.tel}}</p>
       </li>
     </div>
   </div>
