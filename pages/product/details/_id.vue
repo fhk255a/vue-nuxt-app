@@ -4,14 +4,6 @@
       <div class="left" @click="$router.go(-1)">
         <img class="img" src="/image/icon/o-left.png" alt="">
       </div>
-      <div class="right">
-        <div class="love-icon">
-          <img class="img" src="/image/icon/love.png" alt="">
-        </div>
-        <div class="cart-icon">
-          <img class="img" src="/image/icon/cart.png" alt="">
-        </div>
-      </div>
     </div>
     <div class="vue-nuxt-components-body">
       <div class="product-details-banner" v-if="productInfo.images.length>0">
@@ -50,6 +42,8 @@
           <div>
             <van-stepper v-model="productNum" 
              clickable integer 
+             :disabled="!currentSkuData.id || currentSkuData.count==0"
+             :max="currentSkuData.count"
             @focus.stop="showKeyBoard = true"/>
           </div>
         </div>
@@ -91,11 +85,11 @@
       <div class="icon kefu">
         <img src="/image/icon/kefu.png" alt="">
       </div>
-      <div class="icon cart">
+      <div class="icon cart" @click="$router.push('/cart')">
         <img src="/image/tabbar/cart.png" alt="">
       </div>
-      <div class="icon frove">
-        <van-icon name="star-o" size="28" color="#b2b2b2"/>
+      <div class="icon frove" @click="addCollection">
+        <van-icon :name="productInfo.isCollect?'star':'star-o'" size="28" :color="productInfo.isCollect?'#fca839':'#b2b2b2'"/>
       </div>
       <div class="btns">
         <van-button class="cart-btn" :disabled="!productInfo.status" @click="addCart">加到购物车</van-button>
@@ -116,6 +110,8 @@
 <script>
 import http from '@/common/http.js';
 import { ImagePreview } from 'vant';
+import CART from '@/api/cart';
+import {COLLECT} from '@/api/user';
 export default {
   head(){
     return {
@@ -136,11 +132,11 @@ export default {
     // 购买
     buy(){
       if(!this.currentSkuData.id && !this.currentSkuData.status){
-        this.$toast('请选择商品');
+        this.$toast({message:'请选择商品',icon:'clear'});
         return;
       }
       if(this.currentSkuData.count<1){
-        this.$toast('该商品库存不足');
+        this.$toast({message:'该商品库存不足',icon:'clear'});
         return;
       }
       let data = [{id:this.currentSkuData.id,num:this.productNum}];
@@ -150,14 +146,48 @@ export default {
     },
     addCart(){
       if(!this.currentSkuData.id && !this.currentSkuData.status){
-        this.$toast('请选择商品');
+        this.$toast({message:'请选择商品',icon:'clear'});
         return;
       }
       if(this.currentSkuData.count<1){
-        this.$toast('该商品库存不足');
+        this.$toast({message:'该商品库存不足',icon:'clear'});
         return;
       }
       // 加入到购物车
+      let sku = {
+        skuId:this.currentSkuData.id,
+        num:this.productNum,
+        productId:this.productInfo.id
+      }
+      this.$store.commit('function/loading',true);
+      CART.add(sku).then(res=>{
+        this.$toast(res.msg);
+        if(res.code==200){
+          this.$toast({message:res.msg,icon:'success'});
+        }else{
+          this.$toast({message:res.msg,icon:'error'});
+        }
+      }).catch(err=>{
+        this.$toast({message:err,icon:'error'});
+      }).finally(()=>{
+        this.$store.commit('function/loading',false);
+      })
+    },
+    // 加入收藏
+    addCollection(){
+      COLLECT.changeCollect(this.productInfo.id).then(res=>{
+        this.$toast(res.msg);
+        if(res.code==200){
+          this.productInfo.isCollect = res.data;
+          this.$toast({message:res.msg,icon:'star'});
+        }else{
+          this.$toast({message:res.msg,icon:'star'});
+        }
+      }).catch(err=>{
+        this.$toast({message:err,icon:'error'});
+      }).finally(()=>{
+        this.$store.commit('function/loading',false);
+      })
     },
     onInput(d){
       this.productNum+=''+d;
@@ -177,13 +207,17 @@ export default {
       }
     }
   },
-  mounted(){
-    if(!this.productInfo.id){
+  async mounted(){
+    const pid = this.$route.params.id;
+    let res = await http.get('/product/queryProductIds/'+pid);
+    if(res && res.code==200){
+      this.productInfo=res.data;
+      if(!this.productInfo.status){
+        this.$toast({message:'该商品已下架',icon:'clear'});
+        return;
+      }
+    }else{
       this.$toast({message:'商品不存在',icon:'clear'});
-      return;
-    }
-    if(!this.productInfo.status){
-      this.$toast({message:'该商品已下架',icon:'clear'});
       return;
     }
   },
@@ -193,23 +227,13 @@ export default {
       currentSkuData:{
         id:null
       },
+      productInfo:{
+        images:[],
+      },
       showKeyBoard:false, // 数字键盘
       productNum:'',
     }
   },
-  async asyncData(context) {
-    const pid = context.route.params.id;
-    let res = await http.get('/product/queryProductIds/'+pid);
-    if(res && res.code==200){
-      return {
-        productInfo:res.data
-      }
-    }else{
-      return {
-        productInfo:{}
-      }
-    }
-  }
 }
 </script>
 

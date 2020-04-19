@@ -103,6 +103,7 @@ export default {
           this.$store.commit('user/address',res.data.address);
           this.$store.commit('user/token',res.data.token);
           this.$toast('登陆成功');
+          this.$router.push('/');
         }else{
           this.$toast(res.msg);
         }
@@ -126,6 +127,12 @@ export default {
         nickname:'',
       },
     }
+  },
+  mounted(){
+     let token = window.localStorage.getItem('nuxt-token');
+     if(token){
+       this.$router.push('/');
+     }
   }
 }
 </script>

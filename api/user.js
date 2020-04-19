@@ -1,6 +1,14 @@
 import {ajax,http} from '@/common/http.js';
 const URL = '/user';
 export default {
+  // 获取用户信息
+  getUserInfo(){
+    let promise = ajax({
+      url: URL+'/getUserInfo',
+      method: 'get',
+    });
+    return http(promise);
+  },
   // 登录
   login(username,password){
     let promise = ajax({
@@ -62,6 +70,29 @@ export const ADDRESS = {
       method: 'post',
       data:{
         id
+      }
+    });
+    return http(promise);
+  },
+}
+// 我的收藏
+const URL2 = '/user/collect'
+export const COLLECT = {
+   // 获取订单列表
+  list(){
+    let promise = ajax({
+      url: URL2+'/list',
+      method: 'get',
+    });
+    return http(promise);
+  },
+   // 添加收藏
+  changeCollect(productId){
+    let promise = ajax({
+      url: URL2+'/changeCollect',
+      method: 'post',
+      data:{
+        productId
       }
     });
     return http(promise);

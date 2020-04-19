@@ -28,7 +28,7 @@
                   <span>{{product.skuName}}</span>
                   <span>x {{product.num}}</span>
                 </div>
-                <div class="product-price p-icon">{{product.price * product.num}}</div>
+                <div class="product-price p-icon">{{(product.price * product.num).toFixed(2)}}</div>
               </div>
             </div>
             <div class="product-total">
@@ -149,6 +149,7 @@ export default {
     background: #f0f0f2;
     min-height: calc(100vh - 98px);
     padding-top: 48px ;
+    padding-bottom: 48px;
     .order-head{
       background: #FF8602;
       padding: 15px 24px;
@@ -297,7 +298,9 @@ export default {
     position: fixed;
     bottom:0;
     right: 0;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.08);
     left: 0;
+    background: #fff;
     display: flex;
     text-align: right;
     align-items: center;

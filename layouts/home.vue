@@ -1,13 +1,36 @@
 <template>
   <div class="home-layout">
-    <Header type="search" :right="false">
-      <div slot="left">左边</div>
+    <Header type="search" :back="false" :right="true" :left="true">
+      <div slot="left">
+        <van-icon size="26" name="user-circle-o" />
+      </div>
+      <div slot="right">
+        <van-icon name="question-o" size="26" @click="jokerInfoDialog=true" />
+      </div>
     </Header>
     <div class="container">
       <nuxt />
     </div>
     <Tabbar />
     <Loading v-show="$store.state.function.loading"/>
+    <van-popup v-model="jokerInfoDialog" position="right" :style="{ width: '50vw' ,height:'100%'}" >
+      <ul class="joker-info">
+        <li>该项目是一个电商项目</li>
+        <li>有前端<van-tag plain type="primary">Vue-Nuxt</van-tag></li>
+        <li>运营后台<van-tag plain type="primary">Vue-Admin</van-tag></li>
+        <li>后端服务<van-tag plain type="primary">Node-Koa</van-tag></li>
+        <li>
+          <p>主要架构是：</p>
+          <van-tag plain>Nuxt</van-tag>
+          <van-tag plain>Vue</van-tag>
+          <van-tag plain>Axios</van-tag>
+        </li>
+        <li>
+          <p>项目GitHub地址</p>
+          <p></p>
+        </li>
+      </ul>
+    </van-popup>
   </div>
 </template>
 
@@ -20,6 +43,11 @@ export default {
     Header,
     Tabbar,
     Loading
+  },
+  data(){
+    return{
+      jokerInfoDialog:false
+    }
   }
 }
 </script>
@@ -30,6 +58,14 @@ export default {
   >.container{
     padding-top: 48px;
     padding-bottom: 50px;
+  }
+  .joker-info{
+    padding: 15px;
+    li{
+      line-height: 1.5;
+      margin: 10px 0;
+    }
+    font-size: 14px;
   }
 }
 </style>
