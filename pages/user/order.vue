@@ -26,6 +26,7 @@
 import Header from '@/components/Header';
 import ORDER from '@/api/order';
 export default {
+  middleware: 'token',
   components:{
     Header
   },

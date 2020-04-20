@@ -2,14 +2,14 @@
   <div class="vue-nuxt-page-account">
     <div class="page-header">
       <div class="user-img">
-        <img class="img" src="/image/image.png" v-load-img="userinfo.head" alt="">
+        <img class="img" src="/image/image.png" v-load-img="userinfo && userinfo.head" alt="">
       </div >
       <div class="info">
         <p>
-          <span v-if="userinfo.id">{{userinfo.nickname}}</span>
+          <span v-if="userinfo">{{userinfo.nickname}}</span>
           <span v-else>去登录</span>
         </p>
-        <p class="id">ID:{{userinfo.id}}</p>
+        <p class="id" v-if="userinfo">ID:{{userinfo.id}}</p>
       </div>
     </div>
     <div class="page-body">

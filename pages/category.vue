@@ -51,7 +51,6 @@ export default {
   async asyncData(context) {
     let res = await http.get('/category/list');
     if(res && res.code==200){
-      console.log(res);
       return {
         categoryList:res.data,
         currentCategoryData:res.data[0],

@@ -53,7 +53,9 @@
 <script>
 import USER from '@/api/user';
 import Header from '@/components/Header';
+import {setToken} from '@/common/token';
 export default {
+  middleware: 'token',
   components:{
     Header
   },
@@ -98,11 +100,13 @@ export default {
         if(res.code==200){
           window.localStorage.setItem('nuxt-userInfo',JSON.stringify(res.data.userInfo));
           window.localStorage.setItem('nuxt-address',JSON.stringify(res.data.address));
-          window.localStorage.setItem('nuxt-token',JSON.stringify(res.data.token));
+          // window.localStorage.setItem('nuxt-token',JSON.stringify(res.data.token));
           this.$store.commit('user/userInfo',res.data.userInfo);
           this.$store.commit('user/address',res.data.address);
           this.$store.commit('user/token',res.data.token);
-          this.$toast('登陆成功');
+          setToken(res.data.token)
+          this.$toast.success('登陆成功');
+          this.$router.push('/');
         }else{
           this.$toast(res.msg);
         }
@@ -134,6 +138,9 @@ export default {
 .nuxt-page-login{
   min-height: 100vh;
   max-height: 100vh;
+  .vue-nuxt-components-header{
+    background: transparent;
+  }
   .page-container{
     padding-top: 48px;
   }
@@ -198,5 +205,6 @@ export default {
     margin-top: 40px;
     text-align: center;
   }
+
 }
 </style>

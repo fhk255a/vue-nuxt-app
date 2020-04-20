@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from "qs"
 let baseUrl = 'http://localhost:3000/m';
 if (!process.client) {
-	console.log("客户端");
+  console.log("客户端");
 	baseUrl = 'http://localhost:3000/m';
 } else {
 	console.log("服务端");
@@ -15,10 +15,9 @@ const request = axios.create({
 });
 request.interceptors.request.use(
   config => {
-    // if (getToken()) {
-    //   config.headers['Authorization'] = getToken();
-    //   // config.headers['Content-Type'] = 'application/json;charset=UTF-8';
-    // }
+    if (process.client && window.localStorage.getItem('nuxt-token')) {
+      config.headers['Authorization'] = JSON.parse(window.localStorage.getItem('nuxt-token'));
+    }
     // 请求拦截: 成功
     if (config.method === 'post') {
       config.data = qs.stringify(config.data);
@@ -42,7 +41,11 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   response => {
     // 响应拦截 成功
-    return response;
+    if(response.data.code==401){
+      // window.location.href='/login';
+    }else{
+      return response;
+    }
   },
   error => {
     // 响应拦截: 失败

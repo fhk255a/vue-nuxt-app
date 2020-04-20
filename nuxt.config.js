@@ -44,6 +44,7 @@ export default {
     '~/plugins/axios',
     '~/plugins/http',
     '~/plugins/common',
+    '~/plugins/reset-data',
     '~/plugins/load-img',
   ],
   /*

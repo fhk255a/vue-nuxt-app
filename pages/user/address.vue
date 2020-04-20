@@ -38,6 +38,7 @@ import AddressPage from '@/components/address/index';
 import Header from '@/components/Header';
 import {ADDRESS} from '@/api/user';
 export default {
+  middleware: 'token',
   components:{
     Header,
     AddressPage

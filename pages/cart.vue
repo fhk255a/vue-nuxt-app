@@ -55,6 +55,7 @@
 <script>
 import Header from '@/components/Header';
 export default {
+  middleware: 'token',
   components:{
     Header
   },

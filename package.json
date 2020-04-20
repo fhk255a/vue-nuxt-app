@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.9.7",
+    "js-cookie": "^2.2.1",
     "node-sass": "^4.13.1",
     "nuxt": "^2.0.0",
     "postcss-px2rem": "^0.3.0",
