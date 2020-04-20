@@ -37,7 +37,7 @@
                     <span>{{product.label}}</span>
                     <span>x {{product.num}}</span>
                   </div>
-                  <div class="product-price p-icon">{{product.outPrice * product.num}}</div>
+                  <div class="product-price p-icon">{{(product.outPrice * product.num).toFixed(2)}}</div>
                 </div>
               </li>
             </ul>
@@ -78,11 +78,11 @@
           </div>
           <div class="discount">
             <span>优惠</span>
-            <span class="price p-icon">- 10</span>
+            <span class="price p-icon">- 0.00</span>
           </div>
           <div class="total">
             <span>合计</span>
-            <span class="p-icon">301.99</span>
+            <span class="p-icon">{{resultPrice}}</span>
           </div>
         </div>
       </div>
@@ -138,7 +138,7 @@ export default {
           this.$store.commit('user/address',res.data);
           this.addAddressDialog = false;
         }else{
-          this.$toast(res.msg);
+          this.$toast({message:res.msg,icon:'clear'});
         }
       }).catch(err=>{
         this.$toast(err);
@@ -160,16 +160,17 @@ export default {
         items.products.forEach(item=>{
           skuIds.push({
             id:item.skuId,
-            num:item.num
+            num:item.num,
+            cartId:item.cartId,
           })
         })
       }
       if(!this.currentAddress.id){
-        this.$toast.error('地址不能为空');
+        this.$toast({message:'地址不能为空',icon:'clear'});
         return;
       }
       if(this.skuIds && this.skuIds.length<1){
-        this.$toast.error('商品不能为空');
+        this.$toast({message:'商品不能为空',icon:'clear'});
         return;
       }
       this.$store.commit('function/loading',true);
@@ -223,7 +224,7 @@ export default {
             this.orderInfo = res.data;
           }else{
             this.$router.go(-1);
-            this.$toast(res.msg);
+            this.$toast({message:res.msg,icon:'clear'});
           }
         })
       }

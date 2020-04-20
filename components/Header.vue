@@ -78,6 +78,7 @@ export default {
   .left{
     margin-left: 15px;
     width: 32px;
+    text-align: center;
   }
   .right{
     width: 32px;

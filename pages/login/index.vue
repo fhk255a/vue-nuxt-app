@@ -130,6 +130,12 @@ export default {
         nickname:'',
       },
     }
+  },
+  mounted(){
+     let token = window.localStorage.getItem('nuxt-token');
+     if(token){
+       this.$router.push('/');
+     }
   }
 }
 </script>

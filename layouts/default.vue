@@ -12,13 +12,13 @@ export default {
   },
   mounted(){
     const local=(key)=>{ return window.localStorage.getItem(key) };
-    if(!this.$store.state.user.userInfo.id){
+    if(!this.$store.state.user.userInfo && local('nuxt-userInfo')){
       this.$store.commit('user/userInfo',JSON.parse(local('nuxt-userInfo')));
     }
-    if(this.$store.state.user.address.length<1){
+    if(this.$store.state.user.address.length<1 && local('nuxt-address')){
       this.$store.commit('user/address',JSON.parse(local('nuxt-address')));
     }
-    if(this.$store.state.user.token==''){
+    if(this.$store.state.user.token=='' && local('nuxt-token')){
       this.$store.commit('user/token',JSON.parse(local('nuxt-token')));
     }
   }

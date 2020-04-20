@@ -55,7 +55,7 @@ export default {
     onChangeDetail(){
       console.log(this.searchResult);
     }
-  }
+  },
 }
 </script>
 
