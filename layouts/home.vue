@@ -2,7 +2,7 @@
   <div class="home-layout">
     <Header type="search" :back="false" :right="true" :left="true">
       <div slot="left">
-        <van-icon size="26" name="user-circle-o" />
+        <van-icon size="26" name="user-circle-o" @click="$router.push('/login')"/>
       </div>
       <div slot="right">
         <van-icon name="question-o" size="26" @click="jokerInfoDialog=true" />
@@ -26,8 +26,19 @@
           <van-tag plain>Axios</van-tag>
         </li>
         <li>
-          <p>项目GitHub地址</p>
-          <p></p>
+          <p>GitHub</p>
+          <p>当前项目地址：</p>
+          <p>
+            <a href="https://github.com/fhk255a/vue-nuxt-app">当前项目</a>
+          </p>
+          <p>服务端项目地址：</p>
+          <p>
+            <a href="https://github.com/fhk255a/vud-admin-server">服务端</a>
+          </p>
+          <p>运营后台项目地址</p>
+          <p>
+            <a href="https://github.com/fhk255a/vue-admin">运营后台</a>
+          </p>
         </li>
       </ul>
     </van-popup>

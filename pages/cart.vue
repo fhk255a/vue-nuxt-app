@@ -89,12 +89,6 @@ export default {
     },
     changeProduct(shop,item){
       const selectIndex = shop.products.filter(item=>!item.status);
-      // if(selectIndex.length==shop.products.length){   
-      //   shop.status = false;
-      // }else{
-      //   shop.status = true;
-      //   // item.status = false;
-      // }
     },
     // 立即购买
     buyBtn(){
@@ -125,9 +119,11 @@ export default {
       CART.list().then(res=>{
         if(res.code== 200){
           this.cartList = res.data;
+        }else{
+          this.$toast(res.msg);
         }
       }).catch(err=>{
-
+        this.$toast(err);
       }).finally(()=>{
         this.$store.commit('function/loading',false);
       })

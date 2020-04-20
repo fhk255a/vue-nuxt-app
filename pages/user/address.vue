@@ -1,6 +1,6 @@
 <template>
   <div class="vue-nuxt-page-address-list">
-    <Header :left="true" title="我的地址" :back="true" :right="true" :shadow="true"></Header>
+    <Header :left="true" title="我的地址" :right="true" :shadow="true"></Header>
     <div class="page-body">
       <div class="address-list">
         <div class="address-item" @click="orderDetails(item)" v-for="item in addressList" :key="item.id">

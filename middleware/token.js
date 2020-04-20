@@ -15,7 +15,7 @@ export default function ({ isHMR, app, store, req, route, params, error, redirec
     redirect('/')
   }
   /* 无权限访问，跳转到登录页 */
-  if (!token) {
+  if (!token && route.path!='/login') {
     redirect('/login')
   }
 

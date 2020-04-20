@@ -121,6 +121,7 @@ import Header from '@/components/Header';
 import Error from '@/components/404.vue';
 import FUNC from '@/api/function';
 export default {
+  middleware: 'token',
   components:{
     Header,
     Address,

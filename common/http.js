@@ -1,14 +1,15 @@
 import axios from 'axios'
 import qs from "qs"
-// let baseUrl = 'http://localhost:3000/m';
-let baseUrl = 'http://172.18.3.51:3000/m';
+let baseUrl = 'http://localhost:3000/m';
+// let baseUrl = 'http://172.18.3.51:3000/m';
+// let baseUrl = 'http://project.fhk255.cn/m';
 if (!process.client) {
-  console.log("客户端");
-	baseUrl = 'http://localhost:3000/m';
-} else {
-	console.log("服务端");
 	// baseUrl = 'http://localhost:3000/m';
-	baseUrl = 'http://172.18.3.51:3000/m';
+	baseUrl = 'http://project.fhk255.cn/m';
+} else {
+	// baseUrl = 'http://localhost:3000/m';
+	// baseUrl = 'http://172.18.3.51:3000/m';
+	baseUrl = 'http://project.fhk255.cn/m';
 }
 const request = axios.create({
   baseURL: baseUrl,
@@ -43,11 +44,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   response => {
     // 响应拦截 成功
-    if(response.data.code==401){
-      // window.location.href='/login';
-    }else{
-      return response;
-    }
+    return response;
   },
   error => {
     // 响应拦截: 失败

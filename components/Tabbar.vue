@@ -7,7 +7,7 @@
       <van-tabbar-item name="/category">
         <img class="img" :src="active == '/category' ? '/image/tabbar/category_selected@2x.png': '/image/tabbar/category@2x.png'"/>
       </van-tabbar-item>
-      <van-tabbar-item  name="/cart">
+      <van-tabbar-item name="/cart">
         <img class="img" :src="active == '/cart' ? '/image/tabbar/cart_selected@2x.png': '/image/tabbar/cart@2x.png'"/>
       </van-tabbar-item>
       <van-tabbar-item name="/account">
@@ -23,9 +23,6 @@ export default {
     return{
       active:this.$route.path
     }
-  },
-  mounted(){
-    console.log(this.active);
   },
   methods:{
     // 切换tabbar

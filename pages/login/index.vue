@@ -1,6 +1,6 @@
 <template>
   <div class="nuxt-page-login">
-    <Header :left="true" @left="backIcon">
+    <Header :left="true">
       <img style="margin-top:6px" slot="left" src="/image/icon/back.png" />
     </Header>
     <div class="page-container">
@@ -61,7 +61,7 @@ export default {
   },
   methods:{
     backIcon(){
-      this.$router.back();
+      this.$router.go(-1);
     },
     registerBtn(){
       if(this.register.username.trim() == ''){

@@ -1,11 +1,14 @@
 
 export default {
   router: {
-    routeNameSplitter: '/'
+    routeNameSplitter: '/',
+    base:"/" //此为根目录，如果有具体目录需求按实际情况写
   },
   server: {
-    port: 8888, // default: 3000
+    // port: 8888, // default: 3000
+    port: 996, // default: 3000
     host: '0.0.0.0' // default: localhost
+    // host: 'localhost' // default: localhost
   },
   mode: 'universal',
   /*

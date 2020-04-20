@@ -35,6 +35,7 @@
 import Header from '@/components/Header';
 import {COLLECT} from '@/api/user'
 export default {
+  middleware: 'token',
   components:{
     Header
   },

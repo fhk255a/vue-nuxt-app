@@ -2,7 +2,7 @@
   <div class="vue-nuxt-components-top-product" :style="{height:((160+(title?20:0)+(price?20:0))/33+'rem')}">
     <slot></slot>
     <ul class="product-list" >
-      <li class="product-item" v-for="(item,index) in data" :key="item.id">
+      <li class="product-item" @click="$router.push(`/product/details/`+item.id)" v-for="(item,index) in data" :key="item.id">
         <img class="share-icon" src="/image/home/top1.png" alt="" v-if="index==0">
         <img class="share-icon" src="/image/home/top2.png" alt="" v-if="index==1">
         <img class="share-icon" src="/image/home/top3.png" alt="" v-if="index==2">

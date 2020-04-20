@@ -86,6 +86,7 @@ import Header from '@/components/Header';
 import Item from '@/components/Item';
 import Password from '@/components/Password';
 export default {
+  middleware: 'token',
   components:{
     Header,
     Item,

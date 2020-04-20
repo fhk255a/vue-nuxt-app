@@ -5,21 +5,21 @@
     </van-tag>
     <div class="page-header">
       <div class="user-img">
-        <img class="img" src="/image/image.png" v-load-img="userinfo && userinfo.head" alt="">
+        <img class="img" src="/image/image.png" v-load-img="userInfo && userInfo.head" alt="">
       </div >
       <div class="info">
         <p>
-          <span v-if="userinfo">{{userinfo.nickname}}</span>
-          <span v-else>去登录</span>
+          <span v-if="userInfo.id">{{userInfo.nickname}}</span>
+          <span v-else @click="$router.push('/login')">去登录</span>
         </p>
-        <p class="id" v-if="userinfo">ID:{{userinfo.id}}</p>
+        <p class="id" v-if="userInfo">ID:{{userInfo.id}}</p>
       </div>
     </div>
     <div class="page-body">
       <div class="box">
         <div class="list-item" @click="$router.push('/user/order')"
             style="border-bottom: 0.5px solid #d9d9d9bf;backgroundImage:url('/image/user/user_1.png')">
-          <div class="left" >我的订单({{userInfo.orderNum}})</div>
+          <div class="left" >我的订单({{userInfo.orderNum?userInfo.orderNum:0}})</div>
           <div class="right"></div>
         </div>
         <div class="order-list">
@@ -77,6 +77,23 @@
       </div>
     </div>
     <Tabbar/>
+    <van-popup  v-model="dialog"  :style="{ width: '80%' }">
+      <div class="work">
+        <div style="position:relative">
+          <p>疫情当头</p>
+          <p>直接被裁</p>
+          <p>现找工作</p>
+          <p>若被相中</p>
+          <p>请联系我</p>
+          <img style="position: absolute;right: 30px;top: 0px;" src="http://img.fhk255.cn/20200420/15873694254839773x100.jpg" alt="">
+        </div>
+        <p>电话：<a href="tel:13226627208" >13226627208</a></p>
+        <p>QQ：<a href="javascript:void(0);" @click="openQQ">215537936</a></p>
+        <p>微信：fhk255</p>
+        <p class="color-red">更多设置，请PC端登录运营后台</p>
+        <p class="color-red">http://vue-admin.fhk255.cn</p>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -89,6 +106,7 @@ export default {
   },
   data(){
     return{
+      dialog:false,
       userList:[
         {icon:'/image/user/user_2.png',left:'我的信息',id:'userinfo'},
         {icon:'/image/user/user_3.png',left:'我的金币',id:'cion',right:0},
@@ -104,25 +122,7 @@ export default {
         {icon:'/image/user/user_10.png',left:'提问跟解答',id:'faq'},
         {icon:'/image/user/user_11.png',left:'设置',id:'set'},
       ],
-      userInfo:{
-        collectNum: null,
-        id: null,
-        username: null,
-        nickname: null,
-        isFirst: null,
-        createTime: null,
-        lastLoginTime: null,
-        status: null,
-        price: null,
-        head: null,
-        cion: null,
-        orderNum: null,
-        addressNum: null,
-        unPaid: null,
-        notShip: null,
-        shiped: null,
-        overed: null,
-      }
+      userInfo:{}
     }
   },
   mounted() {
@@ -133,8 +133,6 @@ export default {
         this.userList[1].right = res.data.cion;
         this.userList[2].right = res.data.collectNum;
         this.setList[0].right = res.data.addressNum;
-      }else{
-        this.$toast({message:res.msg,icon:'error'});
       }
     }).catch(err=>{
       this.$toast({message:err,icon:'error'});
@@ -143,12 +141,18 @@ export default {
     })
   },
   methods:{
+    openQQ(){
+      window.location.href = "mqqwpa://im/chat?chat_type=wpa&uin=215537936&version=1&src_type=web&web_src=oicqzone.com";
+    },
     openItem(item){
       if(item.id == 'address'){
         this.$router.push('/user/address');
       }
       else if(item.id == 'collect'){
         this.$router.push('/user/collect');
+      }
+      else if(item.id == 'set'){
+        this.dialog = true;
       }
       else{
         this.$toast({message:'Joker没时间做',icon:'warning'});
@@ -274,6 +278,18 @@ export default {
     position: absolute;
     left: 0;
     top:20px;
+  }
+  .work{
+    border-radius: 18px;
+    padding:15px;
+    font-size: 16px;
+    p{
+      line-height: 1.5;
+      color: #333;
+    }
+    .color-red{
+      color: crimson;
+    }
   }
 }
 </style>

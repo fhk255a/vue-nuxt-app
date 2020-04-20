@@ -15,7 +15,7 @@ export default {
     HomeContainer
   },
   async asyncData(context) {
-    let res = await http.get('/page/10');
+    const res = await http.get('/page/10');
     if(res.code==200){
       return {
         pageConfig:res.data

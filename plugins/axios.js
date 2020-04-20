@@ -16,17 +16,4 @@ export default function ({ $axios, redirect }) {
     //   redirect('/400')
     // }
   })
-  $axios.interceptors.response.use(
-    response => {
-      // 响应拦截 成功
-      if(response.data.code==401){
-        console.log('拦截了');
-      }
-      return response;
-    },
-    error => {
-      // 响应拦截: 失败
-      return error;
-    }
-  );
 }

@@ -112,10 +112,10 @@ export default {
       right: 0;
       top: 50px;
       z-index: 109;
+      overflow-y: scroll;
       background: #fff;
       bottom: 50px;
       .category-content-list{
-        overflow-y: scroll;
         display: flex;
         flex-direction: column;
         .category-content-item{
