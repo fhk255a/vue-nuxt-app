@@ -78,7 +78,7 @@
     </div>
     <Tabbar/>
     <van-popup  v-model="dialog"  :style="{ width: '80%' }">
-      <div class="work">
+      <div class="work joker-dialog">
         <div style="position:relative">
           <p>疫情当头</p>
           <p>直接被裁</p>
@@ -93,6 +93,10 @@
         <p class="color-red">更多设置，请PC端登录运营后台</p>
         <p class="color-red">http://vue-admin.fhk255.cn</p>
       </div>
+      <div class="joker-dialog-footer">
+        <van-button>不再提示</van-button>
+        <van-button>取消</van-button>
+      </div>
     </van-popup>
   </div>
 </template>
@@ -106,7 +110,7 @@ export default {
   },
   data(){
     return{
-      dialog:false,
+      dialog:true,
       userList:[
         {icon:'/image/user/user_2.png',left:'我的信息',id:'userinfo'},
         {icon:'/image/user/user_3.png',left:'我的金币',id:'cion',right:0},

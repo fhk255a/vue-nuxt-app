@@ -1,8 +1,8 @@
 import axios from 'axios'
 import qs from "qs"
-let baseUrl = 'http://localhost:3000/m';
+// let baseUrl = 'http://localhost:3000/m';
 // let baseUrl = 'http://172.18.3.51:3000/m';
-// let baseUrl = 'http://project.fhk255.cn/m';
+let baseUrl = 'http://project.fhk255.cn/m';
 if (!process.client) {
 	// baseUrl = 'http://localhost:3000/m';
 	baseUrl = 'http://project.fhk255.cn/m';
@@ -24,14 +24,7 @@ request.interceptors.request.use(
     // 请求拦截: 成功
     if (config.method === 'post') {
       config.data = qs.stringify(config.data);
-    } else {
-      /*  if (config.params) {
-          for (let ol in config.params) {
-            config.params[ol] = encodeURI(config.params[ol]);
-          }
-          console.log('00000000000000000000000', config.params)
-        }*/
-    }
+    } 
     return config;
   },
   error => {
@@ -44,6 +37,9 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   response => {
     // 响应拦截 成功
+    if(response && response.data.code == 401){
+      window.localStorage.removeItem('nuxt-token');
+    }
     return response;
   },
   error => {

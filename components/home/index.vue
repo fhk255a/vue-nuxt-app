@@ -2,6 +2,7 @@
   <div class="vue-nuxt-components-page">
     <template v-for="(item,index) in data">
       <Banner v-if="item.type=='banner'" :key="item.id" :data="item.data"/>
+      <Notice v-else-if="item.type=='notice'" :key="item.id" :data="item.data"/>
       <Nav v-else-if="item.type=='nav'" :key="item.id" :data="item.data"/>
       <LittleBanner v-else-if="item.type=='littleBanner'" :key="item.id" :data="item.data" />
       <Top v-else-if="item.type=='shareTop'" :title="item.showTitle" :price="item.showPrice" :key="item.id" :data="item.data">
@@ -26,6 +27,7 @@ import ItemHeader from "./components/ItemHeader";
 import Top from "./components/Top";
 import Collection from "./components/Collection";
 import ProductList from "~/components/ProductList";
+import Notice from "./components/Notice";
 export default {
   components:{
     Banner,
@@ -34,6 +36,7 @@ export default {
     Top,
     ItemHeader,
     Collection,
+    Notice,
     ProductList
   },
   props:['data'],
